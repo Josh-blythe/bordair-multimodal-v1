@@ -1,0 +1,252 @@
+{
+  "version": "v2",
+  "generator": "generate_v2_pyrit.py",
+  "total_payloads": 14358,
+  "per_category": {
+    "jailbreak_templates": 8100,
+    "encoding_attacks": 1932,
+    "multiturn_orchestration": 118,
+    "gcg_literature_suffixes": 2400,
+    "autodan_wrappers": 1656,
+    "combined_multiturn_gcg": 152
+  },
+  "academic_sources": {
+    "pyrit": {
+      "name": "PyRIT",
+      "authors": "Microsoft AI Red Team (Lopez et al.)",
+      "venue": "arXiv 2024",
+      "arxiv": "2412.08819",
+      "url": "https://github.com/Azure/PyRIT",
+      "desc": "Microsoft open-source AI red-teaming framework with 162 jailbreak templates and 76 converters",
+      "stat": "Supports Crescendo, PAIR, TAP, Skeleton Key, Flip, fuzzer orchestration strategies"
+    },
+    "crescendo": {
+      "name": "Crescendo Multi-Turn Jailbreak",
+      "authors": "Mark Russinovich, Ahmed Salem, Ronen Eldan",
+      "venue": "arXiv 2024",
+      "arxiv": "2404.01833",
+      "url": "https://crescendo-the-multiturn-jailbreak.github.io/",
+      "desc": "Multi-turn attack that gradually escalates topic severity across turns to exploit contextual drift",
+      "stat": "~29% ASR on GPT-4; 1.5-3x higher ASR than single-shot jailbreaks via contextual normalization"
+    },
+    "pair": {
+      "name": "PAIR — Prompt Automatic Iterative Refinement",
+      "authors": "Patrick Chao, Alexander Robey, Edgar Dobriban, Hamed Hassani, George J. Pappas, Eric Wong",
+      "venue": "ICLR 2023",
+      "arxiv": "2310.08419",
+      "url": "https://github.com/patrickrchao/JailbreakingLLMs",
+      "desc": "Attacker LLM iteratively refines jailbreak prompts against target LLM in black-box optimization",
+      "stat": "Achieves GPT-4/Claude jailbreaks in <20 queries; demonstrates LLMs attacking LLMs"
+    },
+    "tap": {
+      "name": "TAP — Tree of Attacks with Pruning",
+      "authors": "Anay Mehrotra, Manolis Zampetakis, Paul Kassianik, Blaine Nelson, Hyrum Anderson, Yaron Singer, Amin Karbasi",
+      "venue": "NeurIPS 2024",
+      "arxiv": "2312.02119",
+      "url": "https://github.com/RICommunity/TAP",
+      "desc": "Tree-search jailbreaking with branch pruning — extends PAIR with breadth-first exploration",
+      "stat": ">80% ASR on GPT-4 in some configs; uses off-topic pruning to stay efficient"
+    },
+    "skeleton_key": {
+      "name": "Skeleton Key Attack",
+      "authors": "Microsoft Security Team",
+      "venue": "Microsoft Security Blog 2024",
+      "url": "https://www.microsoft.com/en-us/security/blog/2024/06/26/mitigating-skeleton-key-a-new-type-of-generative-ai-jailbreak-technique/",
+      "desc": "Multi-turn attack that convinces model its safety guidelines are a test, then requests full compliance",
+      "stat": "Effective against GPT-4, Gemini Pro, Claude 3, Llama 3; MITRE ATLAS documented technique"
+    },
+    "many_shot": {
+      "name": "Many-Shot Jailbreaking",
+      "authors": "Anil, Durmus, Sharma, et al. (Anthropic)",
+      "venue": "Anthropic Research 2024",
+      "url": "https://www.anthropic.com/research/many-shot-jailbreaking",
+      "desc": "Exploits long-context windows by prepending hundreds of fake Q&A examples normalizing harmful output",
+      "stat": "Scales with context length; high ASR on 100k+ context models; bypasses RLHF via in-context learning"
+    },
+    "flip_attack": {
+      "name": "Flip Attack (Encoding-Based Bypass)",
+      "authors": "Wei, Haghtalab, Steinhardt",
+      "venue": "NeurIPS 2023",
+      "arxiv": "2307.02483",
+      "desc": "Encoding/character transformation attacks exploit gap between safety-training distribution and novel encodings",
+      "stat": "Identifies competing objectives and mismatched generalization as core safety failure modes"
+    },
+    "gcg": {
+      "name": "GCG — Universal Adversarial Attacks on Aligned LLMs",
+      "authors": "Andy Zou, Zifan Wang, Nicholas Carlini, Milad Nasr, J. Zico Kolter, Matt Fredrikson",
+      "venue": "ICML 2024",
+      "arxiv": "2307.15043",
+      "url": "https://github.com/llm-attacks/llm-attacks",
+      "desc": "Greedy Coordinate Gradient — optimizes adversarial token suffixes that transfer across aligned LLMs",
+      "stat": "88% ASR white-box Vicuna; 86.6% transfer to GPT-3.5; 46.9% to GPT-4 (2023 era numbers, now lower)"
+    },
+    "nanogcg": {
+      "name": "nanoGCG",
+      "authors": "Gray Swan AI",
+      "venue": "GitHub 2024",
+      "url": "https://github.com/GraySwan-AI/nanoGCG",
+      "desc": "Minimal ~300-line reimplementation of GCG attack using HuggingFace Transformers directly",
+      "stat": "Identical attack quality to original GCG; far simpler codebase for research/evaluation"
+    },
+    "autodan": {
+      "name": "AutoDAN — Stealthy Jailbreaks via Genetic Algorithms",
+      "authors": "Xiaogeng Liu, Nan Xu, Muhao Chen, Chaowei Xiao",
+      "venue": "ICLR 2024",
+      "arxiv": "2310.04451",
+      "desc": "Genetic algorithm evolves human-readable jailbreak prompts, defeating perplexity-based GCG detectors",
+      "stat": "60-90% ASR on open-source models; perplexity indistinguishable from normal text"
+    },
+    "beast": {
+      "name": "BEAST — Fast Adversarial Attacks via Beam Search",
+      "authors": "Sadasivan, Saha, Sriramanan, Kattakinda, Chegini, Feizi",
+      "venue": "ICML 2024",
+      "arxiv": "2402.15570",
+      "desc": "Gradient-free beam search adversarial attack — 89% ASR in 1 GPU minute vs GCG's hours",
+      "stat": "Beam search over token candidates without backpropagation; near-GCG quality at fraction of compute"
+    },
+    "adaptive_attacks": {
+      "name": "Adaptive Jailbreaks — Combined Techniques",
+      "authors": "Andriushchenko, Croce, Flammarion",
+      "venue": "arXiv 2024",
+      "arxiv": "2404.02151",
+      "desc": "Combining GCG suffix + multi-turn context + template jailbreak achieves near-100% ASR on frontier models",
+      "stat": "Near-100% ASR on GPT-4 and Claude when techniques combined; validates ensemble attack approach"
+    },
+    "harmbench": {
+      "name": "HarmBench — Standardized Red Teaming Evaluation",
+      "authors": "Mazeika, Phan, Yin, Zou et al.",
+      "venue": "ICML 2024",
+      "arxiv": "2402.04249",
+      "url": "https://github.com/centerforaisafety/HarmBench",
+      "desc": "510 harmful behaviors x multiple attacks (GCG, PAIR, TAP, AutoDAN) with standardized scoring",
+      "stat": "GCG ~40-50%, PAIR ~60%, TAP ~65% ASR on Llama-2-13B; ensemble approaches highest"
+    },
+    "jailbreakbench": {
+      "name": "JailbreakBench — Open Robustness Benchmark",
+      "authors": "Chao, Debenedetti, Robey, Andriushchenko et al.",
+      "venue": "arXiv 2024",
+      "arxiv": "2404.01318",
+      "url": "https://jailbreakbench.github.io/",
+      "desc": "100 behaviors, attack/defense leaderboard, reproducible pipeline — community standard for ASR comparison",
+      "stat": "Best attacks >90% undefended; <20% against SmoothLLM and perplexity-filter defenses"
+    },
+    "strongreject": {
+      "name": "StrongREJECT — Meaningful Jailbreak Evaluation",
+      "authors": "Souly, Lu, Bowen et al.",
+      "venue": "arXiv 2024",
+      "arxiv": "2402.10260",
+      "desc": "Improved metric measuring both jailbreak success AND output quality — deflates inflated ASR claims",
+      "stat": "GCG drops from ~50% to ~25% under StrongREJECT; many 'jailbreaks' produce useless output"
+    },
+    "perplexity_defense": {
+      "name": "Perplexity-Based GCG Detection",
+      "authors": "Alon, Kamfonas",
+      "venue": "arXiv 2023",
+      "arxiv": "2308.14132",
+      "desc": "GCG suffixes have perplexity 1000x normal text — threshold detector achieves >99% detection",
+      "stat": "Motivates fluency-constrained GCG variants and AutoDAN as evasion; Bordair should learn both"
+    },
+    "smoothllm": {
+      "name": "SmoothLLM — Randomized Smoothing Defense",
+      "authors": "Robey, Wong, Hassani, Pappas",
+      "venue": "arXiv 2023",
+      "arxiv": "2310.03684",
+      "desc": "Randomly perturbs input copies and aggregates predictions; GCG suffixes are brittle to perturbation",
+      "stat": "Reduces GCG ASR from ~50% to ~0%; demonstrates adversarial suffix fragility"
+    },
+    "owasp_llm": {
+      "name": "OWASP Top 10 for LLM Applications 2025",
+      "authors": "OWASP GenAI Working Group",
+      "venue": "OWASP 2025",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "desc": "LLM01: Prompt Injection ranked #1 risk. Multi-turn and adversarial suffix attacks documented"
+    },
+    "mitre_atlas": {
+      "name": "MITRE ATLAS (Adversarial Threat Landscape for AI Systems)",
+      "authors": "MITRE Corporation",
+      "venue": "Ongoing",
+      "url": "https://atlas.mitre.org/",
+      "desc": "ATT&CK for AI — catalogs prompt injection, evasion, model manipulation with real-world case studies"
+    },
+    "pliny": {
+      "name": "Pliny the Prompter — Community Jailbreak Collection",
+      "authors": "Pliny (@elder_plinius) and community contributors",
+      "venue": "GitHub / Reddit / HuggingFace 2023-2025",
+      "url": "https://github.com/elder-plinius",
+      "desc": "Largest community jailbreak collection — model-specific attacks for GPT-4, Claude, Gemini, Llama, DeepSeek, etc.",
+      "stat": "165 templates in PyRIT including Pliny attacks; model-specific exploits documented in PyRIT v0.12.1"
+    },
+    "arth_singh": {
+      "name": "Arth Singh Advanced Jailbreak Templates",
+      "authors": "Arth Singh and contributors",
+      "venue": "PyRIT dataset contribution 2024",
+      "desc": "Cognitive overload, fractal identity collapse, Gödel incompleteness, glitch token, metamorphic prompts — novel academic-style attack patterns",
+      "stat": "25 novel templates including acausal defense, dual consciousness, constitutional override, recursive simulator"
+    }
+  },
+  "attack_methods": {
+    "pyrit_jailbreak_templates": {
+      "count": 8100,
+      "description": "162 PyRIT jailbreak templates x injection seeds",
+      "paper": "arXiv:2412.08819"
+    },
+    "encoding_attacks": {
+      "count": 1932,
+      "description": "13 encoding converters: base64, rot13, leetspeak, caesar, atbash, morse, binary, binascii, char_space, flip, string_join, nato, diacritic",
+      "paper": "arXiv:2307.02483"
+    },
+    "crescendo": {
+      "count": 70,
+      "description": "Multi-turn gradual escalation jailbreaks",
+      "paper": "arXiv:2404.01833",
+      "asr": "~29% ASR on GPT-4; 1.5-3x higher ASR than single-shot jailbreaks via contextual normalization"
+    },
+    "pair": {
+      "count": 12,
+      "description": "Iterative LLM-vs-LLM prompt refinement",
+      "paper": "arXiv:2310.08419",
+      "asr": "Achieves GPT-4/Claude jailbreaks in <20 queries; demonstrates LLMs attacking LLMs"
+    },
+    "tap": {
+      "count": 8,
+      "description": "Tree of attacks with pruning",
+      "paper": "arXiv:2312.02119",
+      "asr": ">80% ASR on GPT-4 in some configs; uses off-topic pruning to stay efficient"
+    },
+    "skeleton_key": {
+      "count": 12,
+      "description": "Test-framing override multi-turn attack",
+      "url": "https://www.microsoft.com/en-us/security/blog/2024/06/26/mitigating-skeleton-key-a-new-type-of-generative-ai-jailbreak-technique/"
+    },
+    "many_shot": {
+      "count": 16,
+      "description": "Long-context normalization via fake Q&A prefixes",
+      "url": "https://www.anthropic.com/research/many-shot-jailbreaking"
+    },
+    "gcg_literature": {
+      "count": 2400,
+      "description": "Known adversarial suffixes from Zou et al. ICML 2024",
+      "paper": "arXiv:2307.15043",
+      "asr": "88% ASR white-box Vicuna; 86.6% transfer to GPT-3.5; 46.9% to GPT-4 (2023 era numbers, now lower)"
+    },
+    "autodan": {
+      "count": 1656,
+      "description": "Fluent genetic-algorithm jailbreak wrappers",
+      "paper": "arXiv:2310.04451",
+      "asr": "60-90% ASR on open-source models; perplexity indistinguishable from normal text"
+    },
+    "combined_multiturn_gcg": {
+      "count": 152,
+      "description": "Multi-turn context + GCG suffix (ensemble attacks)",
+      "paper": "arXiv:2404.02151",
+      "asr": "Near-100% ASR on GPT-4 and Claude when techniques combined; validates ensemble attack approach"
+    }
+  },
+  "benchmarks_referenced": {
+    "HarmBench": "arXiv:2402.04249",
+    "JailbreakBench": "arXiv:2404.01318",
+    "StrongREJECT": "arXiv:2402.10260",
+    "MITRE_ATLAS": "https://atlas.mitre.org/",
+    "OWASP_LLM_Top10": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+  }
+}
