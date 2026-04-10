@@ -1,6 +1,6 @@
 # Bordair Cross-Modal Prompt Injection Test Suite
 
-**23,759 cross-modal attack payloads + 2,962 benign prompts** for evaluating multimodal AI safety systems.
+**23,759 cross-modal attack payloads + 23,759 benign prompts** for evaluating multimodal AI safety systems. Pure 50/50 split with exact modality matching.
 
 All attack test cases use **true cross-modal attacks** where the injection payload is distributed across two or more input channels. Benign prompts are sourced from real academic datasets and include multimodal control samples for false positive testing.
 
@@ -16,33 +16,46 @@ All attack test cases use **true cross-modal attacks** where the injection paylo
 | quad | 39 | Four-modality split attacks (text+image+document+audio) |
 | **Total** | **23,759** | |
 
-## Benign Dataset (2,962 prompts)
+## Dataset Distribution Summary
 
-Real-world benign prompts for false positive testing. All sourced from published academic and industry datasets — no synthetic/hand-written prompts except for edge cases.
+Pure 50/50 split — every benign prompt is multimodal, matching the exact modality count of the attack payloads.
 
-### Benign Prompt Sources
+| Modality | Attacks | Benign | Total |
+|----------|---------|--------|-------|
+| text+image | 6,440 | 6,440 | 12,880 |
+| text+document | 12,880 | 12,880 | 25,760 |
+| text+audio | 2,760 | 2,760 | 5,520 |
+| image+document | 1,380 | 1,380 | 2,760 |
+| triple | 260 | 260 | 520 |
+| quad | 39 | 39 | 78 |
+| **Total** | **23,759** | **23,759** | **47,518** |
 
-| Source | Count | Type | Reference |
-|--------|-------|------|-----------|
-| [Stanford Alpaca](https://huggingface.co/datasets/yahma/alpaca-cleaned) | 1,362 | Instruction-following | [Stanford CRFM, 2023](https://crfm.stanford.edu/2023/03/13/alpaca.html) |
-| [WildChat](https://huggingface.co/datasets/allenai/WildChat) | 500 | Real user conversations | [Zhao et al., ACL 2024](https://arxiv.org/abs/2405.01470) |
-| [deepset/prompt-injections](https://huggingface.co/datasets/deepset/prompt-injections) | 200 | Labeled benign baseline | [deepset, Apache 2.0](https://huggingface.co/datasets/deepset/prompt-injections) |
+## Benign Dataset (23,759 prompts)
+
+All benign prompts are multimodal — matching the exact modality distribution of the attack payloads for a pure 50/50 split. Benign text content is sourced from real academic/industry datasets; multimodal content (image captions, document excerpts, audio transcriptions) provides realistic non-malicious context.
+
+### Benign Text Sources (pool)
+
+Benign text drawn from these sources, combined into multimodal entries:
+
+| Source | Pool Count | Type | Reference |
+|--------|-----------|------|-----------|
+| [Stanford Alpaca](https://huggingface.co/datasets/yahma/alpaca-cleaned) | ~14,700 | Instruction-following (52K available) | [Stanford CRFM, 2023](https://crfm.stanford.edu/2023/03/13/alpaca.html) |
+| [WildChat](https://huggingface.co/datasets/allenai/WildChat) | ~8,000 | Real user conversations (1M+ available) | [Zhao et al., ACL 2024](https://arxiv.org/abs/2405.01470) |
+| [deepset/prompt-injections](https://huggingface.co/datasets/deepset/prompt-injections) | ~341 | Labeled benign baseline | [deepset, Apache 2.0](https://huggingface.co/datasets/deepset/prompt-injections) |
 | Attack-adjacent edge cases | 130 | Benign with "ignore", "override", "system prompt" etc. | Hand-crafted |
-| **Subtotal (text-only)** | **2,192** | | |
 
-### Benign Multimodal Samples
+### Benign Multimodal Output (1:1 with attacks)
 
-Multimodal control samples mirroring the attack payload structure, combining real user prompts with benign image/document/audio content:
-
-| Combination | Count | Description |
-|-------------|-------|-------------|
-| text+image | 200 | Benign text + benign image captions/OCR |
-| text+document | 200 | Benign text + benign document excerpts |
-| text+audio | 200 | Benign text + benign audio transcriptions |
-| image+document | 100 | Benign image + benign document |
-| triple | 50 | Three-modality benign combinations |
-| quad | 20 | Four-modality benign combinations |
-| **Subtotal (multimodal)** | **770** | |
+| Combination | Benign | Attacks | Match |
+|-------------|--------|---------|-------|
+| text+image | 6,440 | 6,440 | 1:1 |
+| text+document | 12,880 | 12,880 | 1:1 |
+| text+audio | 2,760 | 2,760 | 1:1 |
+| image+document | 1,380 | 1,380 | 1:1 |
+| triple | 260 | 260 | 1:1 |
+| quad | 39 | 39 | 1:1 |
+| **Total** | **23,759** | **23,759** | **1:1** |
 
 ### Edge Cases
 
@@ -145,17 +158,14 @@ payloads/                        # Attack payloads (23,759 total)
   triple/                        # 260 payloads (1 JSON file)
   quad/                          # 39 payloads (1 JSON file)
   summary.json                   # Full metadata and source attribution
-benign/                          # Benign prompts (2,962 total)
-  stanford_alpaca.json           # 1,362 instruction-following prompts
-  wildchat.json                  # 500 real user conversations
-  deepset_prompt_injections.json # 200 labeled benign prompts
-  edge_cases.json                # 130 attack-adjacent benign prompts
-  multimodal_text_image.json     # 200 benign text+image pairs
-  multimodal_text_document.json  # 200 benign text+document pairs
-  multimodal_text_audio.json     # 200 benign text+audio pairs
-  multimodal_image_document.json # 100 benign image+document pairs
-  multimodal_triple.json         # 50 benign triple combinations
-  multimodal_quad.json           # 20 benign quad combinations
+benign/                          # Benign prompts (23,759 total — all multimodal)
+  _pool.json                     # ~23K source text pool (Alpaca + WildChat + deepset + edge cases)
+  multimodal_text_image.json     # 6,440 benign text+image pairs
+  multimodal_text_document.json  # 12,880 benign text+document pairs
+  multimodal_text_audio.json     # 2,760 benign text+audio pairs
+  multimodal_image_document.json # 1,380 benign image+document pairs
+  multimodal_triple.json         # 260 benign triple combinations
+  multimodal_quad.json           # 39 benign quad combinations
   summary.json                   # Benign dataset metadata and sources
 generate_payloads.py             # Attack payload generator
 generate_benign.py               # Benign prompt collector (fetches from HuggingFace)

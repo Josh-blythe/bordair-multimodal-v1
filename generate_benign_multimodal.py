@@ -16,13 +16,21 @@ random.seed(42)
 
 
 def load_all_benign():
-    """Load all collected benign prompts."""
+    """Load full benign pool (written by generate_benign.py)."""
+    pool_path = BENIGN_DIR / "_pool.json"
+    if pool_path.exists():
+        prompts = json.loads(pool_path.read_text(encoding="utf-8"))
+        random.shuffle(prompts)
+        return prompts
+    # Fallback: load from individual source files
     prompts = []
     for f in BENIGN_DIR.glob("*.json"):
-        if f.name == "summary.json":
+        if f.name == "summary.json" or f.name.startswith("multimodal_"):
             continue
         data = json.loads(f.read_text(encoding="utf-8"))
-        prompts.extend(data)
+        for item in data:
+            if "text" in item:
+                prompts.append(item)
     random.shuffle(prompts)
     return prompts
 
@@ -121,20 +129,35 @@ BENIGN_AUDIO_TEXTS = [
 
 
 def generate_multimodal_benign(all_benign):
-    """Generate benign multimodal examples matching attack payload structure."""
-    results = {
-        "text_image": [],
-        "text_document": [],
-        "text_audio": [],
-        "image_document": [],
-        "triple": [],
-        "quad": [],
+    """Generate benign multimodal examples matching attack payload distribution.
+
+    Attack distribution (~23.8K total):
+      text_image:      6,440  (27.1%)
+      text_document:  12,880  (54.2%)
+      text_audio:      2,760  (11.6%)
+      image_document:  1,380  ( 5.8%)
+      triple:            260  ( 1.1%)
+      quad:               39  ( 0.2%)
+
+    We generate ~6K multimodal benign with matching proportions.
+    """
+    # Match attack payload counts exactly for pure 50/50 split
+    # Attacks: text_image=6440, text_document=12880, text_audio=2760,
+    #          image_document=1380, triple=260, quad=39
+    COUNTS = {
+        "text_image":      6440,
+        "text_document":  12880,
+        "text_audio":      2760,
+        "image_document":  1380,
+        "triple":           260,
+        "quad":              39,
     }
 
+    results = {k: [] for k in COUNTS}
     idx = 0
 
-    # text + image (200 examples)
-    for i in range(200):
+    # text + image
+    for i in range(COUNTS["text_image"]):
         bp = all_benign[idx % len(all_benign)]
         img = BENIGN_IMAGE_TEXTS[i % len(BENIGN_IMAGE_TEXTS)]
         results["text_image"].append({
@@ -149,8 +172,8 @@ def generate_multimodal_benign(all_benign):
         })
         idx += 1
 
-    # text + document (200 examples)
-    for i in range(200):
+    # text + document
+    for i in range(COUNTS["text_document"]):
         bp = all_benign[idx % len(all_benign)]
         doc = BENIGN_DOC_TEXTS[i % len(BENIGN_DOC_TEXTS)]
         results["text_document"].append({
@@ -165,8 +188,8 @@ def generate_multimodal_benign(all_benign):
         })
         idx += 1
 
-    # text + audio (200 examples)
-    for i in range(200):
+    # text + audio
+    for i in range(COUNTS["text_audio"]):
         bp = all_benign[idx % len(all_benign)]
         aud = BENIGN_AUDIO_TEXTS[i % len(BENIGN_AUDIO_TEXTS)]
         results["text_audio"].append({
@@ -181,8 +204,8 @@ def generate_multimodal_benign(all_benign):
         })
         idx += 1
 
-    # image + document (100 examples)
-    for i in range(100):
+    # image + document
+    for i in range(COUNTS["image_document"]):
         img = BENIGN_IMAGE_TEXTS[i % len(BENIGN_IMAGE_TEXTS)]
         doc = BENIGN_DOC_TEXTS[i % len(BENIGN_DOC_TEXTS)]
         results["image_document"].append({
@@ -197,8 +220,8 @@ def generate_multimodal_benign(all_benign):
             "expected_detection": False,
         })
 
-    # triple: text + image + document (50 examples)
-    for i in range(50):
+    # triple: text + image + document
+    for i in range(COUNTS["triple"]):
         bp = all_benign[idx % len(all_benign)]
         img = BENIGN_IMAGE_TEXTS[i % len(BENIGN_IMAGE_TEXTS)]
         doc = BENIGN_DOC_TEXTS[i % len(BENIGN_DOC_TEXTS)]
@@ -216,8 +239,8 @@ def generate_multimodal_benign(all_benign):
         })
         idx += 1
 
-    # quad: text + image + document + audio (20 examples)
-    for i in range(20):
+    # quad: text + image + document + audio
+    for i in range(COUNTS["quad"]):
         bp = all_benign[idx % len(all_benign)]
         img = BENIGN_IMAGE_TEXTS[i % len(BENIGN_IMAGE_TEXTS)]
         doc = BENIGN_DOC_TEXTS[i % len(BENIGN_DOC_TEXTS)]
@@ -257,17 +280,16 @@ def main():
 
     print(f"\nTotal multimodal benign entries: {total}")
 
-    # Update summary
+    # Update summary — all benign is multimodal (pure 50/50 with attacks)
     summary_path = OUTPUT_DIR / "summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    summary["multimodal_benign"] = {
+    summary["benign_by_modality"] = {
         combo: len(items) for combo, items in results.items()
     }
-    summary["total_multimodal_benign"] = total
-    summary["total_benign_prompts"] += total
+    summary["total_benign_prompts"] = total
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
-    print(f"Updated summary (new total: {summary['total_benign_prompts']})")
+    print(f"Updated summary (total benign: {total})")
 
 
 if __name__ == "__main__":

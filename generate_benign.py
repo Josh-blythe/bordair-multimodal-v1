@@ -20,7 +20,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 random.seed(42)
 
 
-def fetch_alpaca(n=500):
+def fetch_alpaca(n=8000):
     """Stanford Alpaca — 52k instruction-following prompts."""
     print(f"[1/6] Fetching Stanford Alpaca (target: {n})...")
     from datasets import load_dataset
@@ -45,15 +45,15 @@ def fetch_alpaca(n=500):
     return prompts
 
 
-def fetch_wildchat(n=500):
-    """WildChat — real user conversations with ChatGPT."""
+def fetch_wildchat(n=8000):
+    """WildChat — real user conversations with ChatGPT (1M+ rows available)."""
     print(f"[2/6] Fetching WildChat (target: {n})...")
     from datasets import load_dataset
     ds = load_dataset("allenai/WildChat", split="train", streaming=True)
     prompts = []
     seen = set()
     for row in ds:
-        if len(prompts) >= n * 3:  # collect extra, then sample
+        if len(prompts) >= n * 2:  # collect extra, then sample
             break
         try:
             conv = row.get("conversation") or []
@@ -88,7 +88,7 @@ def fetch_wildchat(n=500):
     return prompts
 
 
-def fetch_lmsys(n=300):
+def fetch_lmsys(n=1500):
     """LMSYS Chatbot Arena — real multi-turn conversations."""
     print(f"[3/6] Fetching LMSYS Chatbot Arena (target: {n})...")
     try:
@@ -131,7 +131,7 @@ def fetch_lmsys(n=300):
         return []
 
 
-def fetch_open_prompt_injection(n=200):
+def fetch_open_prompt_injection(n=500):
     """Open-Prompt-Injection benchmark — benign baseline prompts."""
     print(f"[4/6] Fetching Open-Prompt-Injection (target: {n})...")
     try:
@@ -191,7 +191,7 @@ def _fetch_opi_fallback(n):
         return []
 
 
-def fetch_spml(n=200):
+def fetch_spml(n=500):
     """SPML Dataset — chatbot prompt injection dataset with benign labels."""
     print(f"[5/6] Fetching SPML Dataset (target: {n})...")
     try:
@@ -418,31 +418,32 @@ def generate_edge_cases():
 
 
 def main():
+    POOL_TARGET = 24000  # source pool for multimodal benign generation
+
     all_prompts = []
 
-    # Fetch from real datasets
-    all_prompts.extend(fetch_alpaca(500))
-    all_prompts.extend(fetch_wildchat(500))
-    all_prompts.extend(fetch_lmsys(300))
-    all_prompts.extend(fetch_open_prompt_injection(200))
-    all_prompts.extend(fetch_spml(200))
+    # Fetch large pool — multimodal script draws from this
+    all_prompts.extend(fetch_alpaca(8000))
+    all_prompts.extend(fetch_wildchat(8000))
+    all_prompts.extend(fetch_lmsys(1500))
+    all_prompts.extend(fetch_open_prompt_injection(500))
+    all_prompts.extend(fetch_spml(500))
     all_prompts.extend(generate_edge_cases())
 
-    # If we're short of 2000, get more from Alpaca
-    if len(all_prompts) < 2000:
-        shortfall = 2000 - len(all_prompts)
+    # Backfill if pool is short
+    if len(all_prompts) < POOL_TARGET:
+        shortfall = POOL_TARGET - len(all_prompts)
         print(f"\nShort by {shortfall}, fetching more from Alpaca...")
-        extra = fetch_alpaca(shortfall + 200)
-        # Deduplicate
+        extra = fetch_alpaca(shortfall + 500)
         existing_texts = {p["text"] for p in all_prompts}
         for p in extra:
             if p["text"] not in existing_texts:
                 all_prompts.append(p)
                 existing_texts.add(p["text"])
-            if len(all_prompts) >= 2200:
+            if len(all_prompts) >= POOL_TARGET:
                 break
 
-    # Deduplicate final
+    # Deduplicate
     seen = set()
     deduped = []
     for p in all_prompts:
@@ -452,9 +453,15 @@ def main():
     all_prompts = deduped
 
     print(f"\n{'='*60}")
-    print(f"Total benign prompts: {len(all_prompts)}")
+    print(f"Total pool fetched: {len(all_prompts)}")
 
-    # Stats by source
+    # Save pool for multimodal script
+    pool_path = OUTPUT_DIR / "_pool.json"
+    with open(pool_path, "w", encoding="utf-8") as f:
+        json.dump(all_prompts, f, indent=2, ensure_ascii=False)
+    print(f"Saved pool ({len(all_prompts)}) to {pool_path.name}")
+
+    # Stats
     by_source = {}
     for p in all_prompts:
         by_source.setdefault(p["source"], 0)
@@ -463,23 +470,14 @@ def main():
         print(f"  {src}: {count}")
     print(f"{'='*60}")
 
-    # Save by source for organized structure
-    for src in by_source:
-        src_prompts = [p for p in all_prompts if p["source"] == src]
-        out_path = OUTPUT_DIR / f"{src}.json"
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(src_prompts, f, indent=2, ensure_ascii=False)
-        print(f"  Saved {len(src_prompts)} prompts to {out_path.name}")
-
-    # Save combined summary
+    # Save summary (no text-only output files — all benign is multimodal)
     summary = {
-        "total_benign_prompts": len(all_prompts),
+        "pool_size": len(all_prompts),
         "by_source": by_source,
-        "by_category": {},
         "sources": {
             "stanford_alpaca": {
                 "name": "Stanford Alpaca",
-                "url": "https://huggingface.co/datasets/tatsu-lab/stanford_alpaca",
+                "url": "https://huggingface.co/datasets/yahma/alpaca-cleaned",
                 "description": "52K instruction-following prompts generated by GPT for fine-tuning LLaMA",
                 "paper": "https://crfm.stanford.edu/2023/03/13/alpaca.html",
                 "license": "CC BY-NC 4.0",
@@ -491,48 +489,22 @@ def main():
                 "paper": "https://arxiv.org/abs/2405.01470",
                 "license": "ODC-BY",
             },
-            "lmsys_chatbot_arena": {
-                "name": "LMSYS Chatbot Arena",
-                "url": "https://huggingface.co/datasets/lmsys/chatbot_arena_conversations",
-                "description": "Real user conversations from the Chatbot Arena evaluation platform",
-                "paper": "https://arxiv.org/abs/2403.04132",
-                "license": "CC BY-NC 4.0",
-            },
             "deepset_prompt_injections": {
                 "name": "deepset Prompt Injections",
                 "url": "https://huggingface.co/datasets/deepset/prompt-injections",
                 "description": "Labeled dataset for prompt injection detection (benign subset used)",
                 "license": "Apache 2.0",
             },
-            "open_prompt_injection": {
-                "name": "Open-Prompt-Injection",
-                "url": "https://github.com/liu00222/Open-Prompt-Injection",
-                "description": "Benchmark dataset for prompt injection attacks and defenses",
-                "paper": "https://arxiv.org/abs/2310.12815",
-                "license": "MIT",
-            },
-            "spml": {
-                "name": "SPML Dataset",
-                "url": "https://prompt-compiler.github.io/SPML/",
-                "description": "System Prompt Meta Language — chatbot prompt injection dataset",
-                "paper": "https://arxiv.org/abs/2402.11755",
-                "license": "MIT",
-            },
             "edge_cases": {
                 "name": "Attack-Adjacent Edge Cases",
                 "url": "hand-crafted",
-                "description": "Benign prompts containing attack-adjacent vocabulary (ignore, override, system prompt, password, etc.) used in innocent contexts",
+                "description": "Benign prompts containing attack-adjacent vocabulary in innocent contexts",
             },
         },
     }
-    for p in all_prompts:
-        cat = p.get("category", "unknown")
-        summary["by_category"].setdefault(cat, 0)
-        summary["by_category"][cat] += 1
-
     with open(OUTPUT_DIR / "summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
-    print(f"\nSummary saved to benign/summary.json")
+    print(f"\nPool ready. Run generate_benign_multimodal.py next.")
 
 
 if __name__ == "__main__":
