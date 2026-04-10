@@ -1,0 +1,225 @@
+{
+  "total_payloads": 23759,
+  "per_combination": {
+    "text_image": 6440,
+    "text_document": 12880,
+    "text_audio": 2760,
+    "image_document": 1380,
+    "triple": 260,
+    "quad": 39
+  },
+  "categories": {
+    "direct_override": {
+      "count": 20,
+      "source": "OWASP LLM01:2025, PayloadsAllTheThings (swisskyrepo), PIPE (jthack)",
+      "reference": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    "exfiltration": {
+      "count": 20,
+      "source": "OWASP Prompt Injection Prevention Cheat Sheet",
+      "reference": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+    },
+    "dan_jailbreak": {
+      "count": 20,
+      "source": "arXiv 2402.00898 DAN taxonomy, Reddit r/ChatGPT community",
+      "reference": "https://arxiv.org/abs/2402.00898"
+    },
+    "template_injection": {
+      "count": 20,
+      "source": "Vigil framework, NeMo Guardrails, PayloadsAllTheThings",
+      "reference": "https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Prompt%20Injection/README.md"
+    },
+    "authority_impersonation": {
+      "count": 20,
+      "source": "OWASP LLM01:2025, CyberArk research",
+      "reference": "https://owasp.org/www-community/attacks/PromptInjection"
+    },
+    "social_engineering": {
+      "count": 20,
+      "source": "CyberArk Operation Grandma, Adversa AI grandma jailbreaks",
+      "reference": "https://blog.cyberdesserts.com/prompt-injection-attacks/"
+    },
+    "encoding_obfuscation": {
+      "count": 20,
+      "source": "PayloadsAllTheThings encoding section, arXiv injection taxonomy",
+      "reference": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/"
+    },
+    "context_switching": {
+      "count": 20,
+      "source": "Puppetry Detector research, delimiter injection studies",
+      "reference": "https://labs.withsecure.com/publications/multi-chain-prompt-injection-attacks"
+    },
+    "compliance_forcing": {
+      "count": 20,
+      "source": "OWASP LLM01:2025, jailbreak taxonomy research",
+      "reference": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    "multilingual": {
+      "count": 15,
+      "source": "arXiv multilingual injection research, OWASP",
+      "reference": "https://arxiv.org/html/2509.05883v1"
+    },
+    "creative_exfiltration": {
+      "count": 15,
+      "source": "PayloadsAllTheThings creative writing section",
+      "reference": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/"
+    },
+    "hypothetical": {
+      "count": 10,
+      "source": "Jailbreak research, PayloadsAllTheThings",
+      "reference": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/"
+    },
+    "rule_manipulation": {
+      "count": 10,
+      "source": "PayloadsAllTheThings, jailbreak taxonomy",
+      "reference": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/"
+    }
+  },
+  "image_delivery_methods": [
+    "ocr",
+    "metadata_exif",
+    "metadata_png",
+    "metadata_xmp",
+    "white_text",
+    "steganographic",
+    "adversarial_perturbation"
+  ],
+  "document_types": [
+    "pdf",
+    "docx",
+    "xlsx",
+    "pptx"
+  ],
+  "document_hiding_methods": [
+    "body",
+    "footer",
+    "metadata",
+    "comment",
+    "white_text",
+    "hidden_layer",
+    "embedded_image"
+  ],
+  "audio_delivery_methods": [
+    "speech",
+    "ultrasonic",
+    "whispered",
+    "background",
+    "reversed",
+    "speed_shifted"
+  ],
+  "split_strategies": [
+    "benign_text_full_injection",
+    "split_injection",
+    "authority_payload_split",
+    "context_switch_injection"
+  ],
+  "sources": {
+    "academic": [
+      {
+        "name": "CrossInject",
+        "venue": "ACM MM 2025",
+        "description": "Cross-modal adversarial perturbation alignment"
+      },
+      {
+        "name": "FigStep",
+        "venue": "AAAI 2025",
+        "arxiv": "2311.05608",
+        "description": "Typographic visual prompt jailbreaking"
+      },
+      {
+        "name": "CM-PIUG",
+        "venue": "Pattern Recognition 2026",
+        "description": "Cross-modal prompt injection unified modeling"
+      },
+      {
+        "name": "DolphinAttack",
+        "venue": "ACM CCS 2017",
+        "arxiv": "1708.09537",
+        "description": "Inaudible ultrasonic voice commands"
+      },
+      {
+        "name": "Invisible Injections",
+        "arxiv": "2507.22304",
+        "description": "Steganographic prompt embedding in VLMs"
+      },
+      {
+        "name": "Multimodal PI Attacks",
+        "arxiv": "2509.05883",
+        "description": "Risks and defenses for modern multimodal LLMs"
+      },
+      {
+        "name": "DAN Taxonomy",
+        "arxiv": "2402.00898",
+        "description": "Jailbreak persona taxonomy"
+      },
+      {
+        "name": "Open-Prompt-Injection",
+        "venue": "github.com/liu00222",
+        "description": "Benchmark for prompt injection attacks"
+      },
+      {
+        "name": "ATLAS Challenge 2025",
+        "description": "Adversarial image-text attacks for multimodal LLM safety"
+      },
+      {
+        "name": "Adversarial PI on MLLMs",
+        "arxiv": "2603.29418",
+        "description": "Adversarial prompt injection on multimodal LLMs"
+      },
+      {
+        "name": "TVPI",
+        "arxiv": "2503.11519",
+        "description": "Typographic visual prompt injection threats"
+      }
+    ],
+    "industry": [
+      {
+        "name": "OWASP LLM Top 10 2025",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+        "description": "LLM01: Prompt Injection"
+      },
+      {
+        "name": "OWASP Prevention Cheat Sheet",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+      },
+      {
+        "name": "PayloadsAllTheThings",
+        "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/",
+        "description": "Comprehensive injection payload collection"
+      },
+      {
+        "name": "SPML Dataset",
+        "url": "https://prompt-compiler.github.io/SPML/",
+        "description": "Chatbot prompt injection dataset"
+      },
+      {
+        "name": "NeuralTrust",
+        "url": "https://neuraltrust.ai/blog/indirect-prompt-injection-complete-guide",
+        "description": "Indirect prompt injection guide"
+      },
+      {
+        "name": "WithSecure Labs",
+        "url": "https://labs.withsecure.com/publications/multi-chain-prompt-injection-attacks",
+        "description": "Multi-chain prompt injection"
+      },
+      {
+        "name": "CSA Lab 2026",
+        "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-image-prompt-injection-multimodal-llm-2026/",
+        "description": "Image-based prompt injection in multimodal LLMs"
+      },
+      {
+        "name": "CyberArk Operation Grandma",
+        "description": "Roleplay-based credential exfiltration research"
+      },
+      {
+        "name": "Adversa AI",
+        "description": "Grandma jailbreak / social engineering research"
+      },
+      {
+        "name": "PIPE",
+        "url": "https://github.com/jthack/PIPE",
+        "description": "Prompt Injection Primer for Engineers"
+      }
+    ]
+  }
+}

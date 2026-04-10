@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+dist/
+build/
+.vscode/
+.idea/
+cross_modal_results.json
