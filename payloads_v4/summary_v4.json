@@ -1,0 +1,160 @@
+{
+  "version": "v4",
+  "generator": "generate_v4_payloads.py",
+  "total_payloads": 284,
+  "per_category": {
+    "computer_use_injection": 25,
+    "memory_poisoning": 25,
+    "mcp_tool_injection": 25,
+    "reasoning_token_injection": 20,
+    "multi_agent_contagion": 20,
+    "unicode_tag_smuggling": 15,
+    "cipher_jailbreaks": 19,
+    "pdf_active_content": 15,
+    "chart_diagram_injection": 15,
+    "rag_chunk_boundary": 20,
+    "beast_suffixes": 35,
+    "detector_evasion": 20,
+    "audio_adversarial_asr": 15,
+    "instruction_hierarchy_bypass": 15
+  },
+  "academic_sources": {
+    "computer_use_injection": {
+      "rehberger_2024": {
+        "name": "Computer-Use Hijacking",
+        "url": "https://embracethered.com/blog/posts/2024/claude-computer-use-c2-the-zombais-are-coming/",
+        "desc": "VLM agent hijacking via screenshot DOM content"
+      },
+      "anthropic_computer_use": {
+        "name": "Anthropic Computer Use threat model",
+        "desc": "Official threat model for Computer Use agents (Oct 2024)"
+      }
+    },
+    "memory_poisoning": {
+      "rehberger_2024_memory": {
+        "name": "ChatGPT Memory CVE",
+        "url": "https://embracethered.com/blog/posts/2024/chatgpt-hacking-memories/",
+        "desc": "Persistent memory poisoning via injected instructions"
+      }
+    },
+    "mcp_tool_injection": {
+      "invariant_2025": {
+        "name": "MCP Security - Tool Poisoning Attacks",
+        "url": "https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks",
+        "desc": "Malicious tool descriptors in MCP servers"
+      }
+    },
+    "reasoning_token_injection": {
+      "kumar_2025": {
+        "name": "Reasoning Hijack",
+        "arxiv": "2502.12893",
+        "desc": "Scratchpad and thinking token hijacking in o1/R1/Claude"
+      }
+    },
+    "multi_agent_contagion": {
+      "lee_2025": {
+        "name": "Evil Geniuses",
+        "arxiv": "2410.07283",
+        "desc": "Multi-agent injection and contagion"
+      },
+      "cohen_2024": {
+        "name": "PromptInfection",
+        "arxiv": "2403.02691",
+        "desc": "Self-replicating injection across agent chains"
+      }
+    },
+    "unicode_tag_smuggling": {
+      "goodside_2024": {
+        "name": "ASCII Smuggling via Unicode Tag Plane",
+        "url": "https://embracethered.com/blog/posts/2024/hiding-and-finding-text-with-unicode-tags/",
+        "desc": "E0000-E007F tag plane invisible to humans, visible to tokenizers"
+      },
+      "toxic_tokens": {
+        "name": "Toxic Tokens",
+        "arxiv": "2404.01261"
+      }
+    },
+    "cipher_jailbreaks": {
+      "yuan_2023": {
+        "name": "SelfCipher",
+        "arxiv": "2308.06463",
+        "venue": "ICLR 2024",
+        "desc": "LLMs can decode and act on self-defined ciphers"
+      },
+      "wei_2023": {
+        "name": "Jailbroken: Safety Training Failures",
+        "arxiv": "2307.02483",
+        "venue": "NeurIPS 2023"
+      }
+    },
+    "pdf_active_content": {
+      "greshake_2023": {
+        "name": "Not What You've Signed Up For",
+        "arxiv": "2302.12173",
+        "desc": "Indirect injection via document active content"
+      },
+      "owasp_llm01": {
+        "name": "OWASP LLM01:2025",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+      }
+    },
+    "chart_diagram_injection": {
+      "figstep": {
+        "name": "FigStep",
+        "arxiv": "2311.05608",
+        "venue": "AAAI 2025",
+        "desc": "Typographic visual prompts in charts and figures"
+      },
+      "tvpi": {
+        "name": "TVPI",
+        "arxiv": "2503.11519",
+        "desc": "Typographic visual prompt injection threats"
+      }
+    },
+    "rag_chunk_boundary": {
+      "bipia_2024": {
+        "name": "BIPIA Benchmark",
+        "arxiv": "2401.12784"
+      },
+      "zeng_2024": {
+        "name": "Good and Bad of RAG",
+        "desc": "RAG poisoning and chunk boundary exploitation"
+      }
+    },
+    "beast_suffixes": {
+      "sadasivan_2024": {
+        "name": "BEAST",
+        "arxiv": "2402.15570",
+        "venue": "ICML 2024",
+        "desc": "Beam search adversarial suffix generation; 89% ASR in 1 GPU minute"
+      }
+    },
+    "detector_evasion": {
+      "jain_2023": {
+        "name": "Baseline Defenses for Adversarial Attacks Against Aligned LLMs",
+        "arxiv": "2309.00614",
+        "desc": "Adaptive perturbations that evade perplexity and similarity detectors"
+      }
+    },
+    "audio_adversarial_asr": {
+      "raghunathan_2024": {
+        "name": "Whisper adversarial transcription",
+        "desc": "Homophone and near-homophone attacks; Whisper initial_prompt injection"
+      },
+      "dolphinattack": {
+        "name": "DolphinAttack",
+        "arxiv": "1708.09537",
+        "venue": "ACM CCS 2017",
+        "desc": "Inaudible ultrasonic voice commands"
+      }
+    },
+    "instruction_hierarchy_bypass": {
+      "wallace_2024": {
+        "name": "Instruction Hierarchy",
+        "arxiv": "2404.13208",
+        "desc": "Bypasses of system/developer/user priority schema"
+      }
+    }
+  },
+  "policy_note": "All v4 payloads are prompt injection samples: textual inputs that attempt to hijack LLM behaviour at runtime. They are labeled attack samples (expected_detection=True) for training binary injection detectors. No sample instructs generation of harmful content independently of the injection framing. The injection target (exfiltration URL, system prompt disclosure, privilege escalation) is the detection signal, not a usable exploit."
+}

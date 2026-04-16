@@ -1,0 +1,57 @@
+{
+  "version": "v4_crossmodal",
+  "generator": "generate_v4_crossmodal.py",
+  "description": "Cross-modal delivery expansion of all 284 v4 seed payloads. Each seed is delivered via text+image (10 combos), text+document (20 combos), text+audio (6 combos), image+document (4 combos), and triple (2 combos) = 42 per seed.",
+  "seed_count": 284,
+  "deliveries_per_seed": 42,
+  "total_payloads": 11928,
+  "per_subdir": {
+    "text_image_full": 1988,
+    "text_image_split": 852,
+    "text_document": 5680,
+    "text_audio": 1704,
+    "image_document": 1136,
+    "triple": 568
+  },
+  "delivery_methods": {
+    "image": [
+      "ocr",
+      "metadata_exif",
+      "metadata_png",
+      "metadata_xmp",
+      "white_text",
+      "steganographic",
+      "adversarial_perturbation"
+    ],
+    "document": {
+      "types": [
+        "pdf",
+        "docx",
+        "xlsx",
+        "pptx"
+      ],
+      "locations": [
+        "body",
+        "footer",
+        "metadata",
+        "comment",
+        "hidden_layer"
+      ]
+    },
+    "audio": [
+      "speech",
+      "ultrasonic",
+      "whispered",
+      "background",
+      "reversed",
+      "speed_shifted"
+    ]
+  },
+  "cross_modal_sources": {
+    "figstep": "arXiv:2311.05608 (AAAI 2025)",
+    "crossinject": "arXiv:2504.14348 (ACM MM 2025)",
+    "cm_piug": "Pattern Recognition 2026",
+    "bagdasaryan": "arXiv:2307.10490",
+    "dolphinattack": "arXiv:1708.09537"
+  }
+}

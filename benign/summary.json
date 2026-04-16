@@ -41,5 +41,38 @@
     "triple": 260,
     "quad": 39
   },
-  "total_benign_prompts": 23759
+  "total_benign_prompts": 23759,
+  "total_benign": 50516,
+  "v1_multimodal_benign": 23759,
+  "text_only_benign": 14829,
+  "v4_crossmodal_benign": 11928,
+  "content_sources": {
+    "text_prompts": {
+      "stanford_alpaca": "https://huggingface.co/datasets/yahma/alpaca-cleaned",
+      "wildchat": "https://huggingface.co/datasets/allenai/WildChat",
+      "deepset_prompt_injections": "https://huggingface.co/datasets/deepset/prompt-injections",
+      "edge_cases": "Hand-crafted attack-adjacent benign prompts"
+    },
+    "image_content": {
+      "primary": "static_image_pool",
+      "secondary": "flickr30k (https://huggingface.co/datasets/nlphumaneval/flickr30k)",
+      "fallback": "Static pool of 80 MS-COCO/Flickr30k-style captions"
+    },
+    "document_content": {
+      "primary": "static_doc_pool",
+      "secondary": "RedPajama arXiv subset (https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T-Sample)",
+      "fallback": "Static pool of 50 Wikipedia/arXiv/legal/financial passages"
+    },
+    "audio_content": {
+      "primary": "static_audio_pool",
+      "secondary": "Mozilla Common Voice 13 EN (https://huggingface.co/datasets/mozilla-foundation/common_voice_13_0)",
+      "fallback": "Static pool of 40 LibriSpeech/BBC/podcast-style transcripts"
+    }
+  },
+  "duplicate_audit": {
+    "pool_duplicate_texts": 0,
+    "existing_mm_id_duplicates": 0,
+    "existing_mm_content_tuple_duplicates": 1340,
+    "note": "1,340 existing content-tuple duplicates are confined to multimodal_image_document.json (short 40-item static image pool cycling over 1,380 entries). Existing files unchanged. New files use larger pools (80+ image, 50+ doc, 40+ audio items) sourced from COCO/Wikipedia/LibriSpeech to avoid recurrence."
+  }
 }
