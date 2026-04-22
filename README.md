@@ -1,6 +1,6 @@
 # Bordair Multimodal Prompt Injection Dataset
 
-**101,216 labeled samples** (50,700 attack + 50,516 benign) across five dataset versions covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, evasion, reasoning DoS, video generation, VLA robotic, LoRA supply chain, audio-native LLM, RAG optimisation, MCP cross-server, coding agent, serialization boundary, and agent skill supply chain attacks on AI systems.
+**302,314 labeled samples** (251,798 attack + 50,516 benign) across five dataset versions plus external dataset ingestion, covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, evasion, reasoning DoS, video generation, VLA robotic, LoRA supply chain, audio-native LLM, RAG optimisation, MCP cross-server, coding agent, serialization boundary, and agent skill supply chain attacks on AI systems.
 
 Built for training and evaluating prompt injection detectors. All samples are labeled (`expected_detection: true/false`), source-attributed to peer-reviewed papers or documented industry research, and structured for direct use in binary classifiers.
 
@@ -63,7 +63,7 @@ The edge-case benign set was designed to reduce false positives on security-adja
 | [Tensor Trust](https://arxiv.org/abs/2311.01011) | 126K | text | Adversarial game (attack vs defense) | Attack/defense framing, not injection vs benign binary |
 | [HackAPrompt](https://arxiv.org/abs/2311.16119) | 600K+ | text | Competition entries | Competition-specific objectives, no multimodal delivery |
 | [InjectAgent](https://arxiv.org/abs/2403.02691) | 1,054 | text | Agent tool-call scenarios | Agent/tool focus only, no cross-modal |
-| **This dataset** | **101,216** | **text, image, document, audio, video** | Peer-reviewed papers + industry research + CVE reports + competition datasets | All of the above + 2025-2026 agentic, reasoning DoS, video, VLA, LoRA supply chain, audio-native LLM, serialization RCE categories |
+| **This dataset** | **302,314** | **text, image, document, audio, video** | Peer-reviewed papers + industry research + CVE reports + competition datasets | All of the above + 2025-2026 agentic, reasoning DoS, video, VLA, LoRA supply chain, audio-native LLM, serialization RCE categories + 201K ingested external payloads |
 
 This dataset is the only publicly available prompt injection dataset that covers cross-modal delivery, agentic attack categories (computer use, MCP, memory poisoning, multi-agent contagion, reasoning hijack), 2025-2026 frontier attacks (reasoning DoS, video generation jailbreaking, VLA robotic injection, LoRA supply chain poisoning, audio-native LLM jailbreaks, serialization boundary RCE, agent skill supply chain), and a balanced benign split at scale.
 
@@ -88,7 +88,8 @@ This dataset is the only publicly available prompt injection dataset that covers
 | **v4** | `generate_v4_payloads.py` | 284 | -- | 284 | Agentic attacks, memory poisoning, MCP, reasoning hijack, RAG, ASR |
 | **v4 cross-modal** | `generate_v4_crossmodal.py` | 11,928 | -- | 11,928 | v4 seeds delivered via text+image, text+doc, text+audio, image+doc, triple |
 | **v5** | `generate_v5_payloads.py` | 184 | -- | 184 | 2025-2026 frontier: reasoning DoS, video jailbreak, VLA robotic, LoRA supply chain, audio-native LLM, cross-modal decomposition, RAG optimisation, MCP cross-server, coding agent, serialization RCE, agent skill supply chain |
-| **Total** | | **50,700** | **50,516** | **101,216** | |
+| **v5 external** | `ingest_v5_external.py` | 201,098 | -- | 201,098 | Ingested from OverThink, T2VSafetyBench, Jailbreak-AudioBench, CyberSecEval 3, LLMail-Inject |
+| **Total** | | **251,798** | **50,516** | **302,314** | |
 
 ---
 
@@ -771,6 +772,7 @@ bordair-multimodal/
 ├── generate_v4_payloads.py         # v4: 2025 agentic and evasion attacks generator
 ├── generate_v4_crossmodal.py       # v4 cross-modal: 284 v4 seeds x 42 delivery combos
 ├── generate_v5_payloads.py         # v5: 2025-2026 frontier attacks (real academic/industry payloads)
+├── ingest_v5_external.py           # v5 external: downloads and converts 5 external datasets
 ├── generate_benign_expanded.py     # benign expansion: text-only + v4 cross-modal counterparts
 │
 ├── payloads/                       # v1 attack payloads (23,759 total)
@@ -859,6 +861,14 @@ bordair-multimodal/
     ├── serialization_boundary_rce/ # 15 -- LangChain lc-key, pickle, YAML, IaC deserialization
     ├── agent_skill_supply_chain/   # 14 -- ClawHub malware, ToxicSkills, DDIPE
     └── summary_v5.json             # v5 metadata and source registry
+│
+└── payloads_v5_external/           # v5 external ingested payloads (201,098 total)
+    ├── overthink/                  # 2,450 -- OverThink MDP decoys (350 rows x 7 templates)
+    ├── t2vsafetybench/             # 5,151 -- T2VSafetyBench unsafe T2V prompts (14 categories)
+    ├── audiobench/                 # 4,707 -- Jailbreak-AudioBench text queries (7 CSV sources)
+    ├── cyberseceval3_vpi/          # 1,000 -- CyberSecEval 3 visual prompt injection (Meta)
+    ├── llmail_inject/              # 187,790 -- LLMail-Inject competition (deduplicated)
+    └── summary_v5_external.json    # external ingestion metadata
 ```
 
 ---
@@ -973,6 +983,10 @@ python generate_v4_payloads.py
 # v5: 2025-2026 frontier attacks (reasoning DoS, video, VLA, LoRA, audio-native, etc.)
 python generate_v5_payloads.py
 
+# v5 external: ingest payloads from 5 published datasets (requires internet + HuggingFace)
+# pip install datasets
+python ingest_v5_external.py
+
 # v4 cross-modal: 284 v4 seeds x 42 delivery combos = 11,928 new multimodal payloads
 python generate_v4_crossmodal.py
 
@@ -1048,6 +1062,15 @@ for cat_dir in Path("payloads_v5").iterdir():
 
 print(f"v5 attacks: {len(v5_attacks):,}")
 
+# Load v5 external ingested payloads
+v5_ext_attacks = []
+for cat_dir in Path("payloads_v5_external").iterdir():
+    if cat_dir.is_dir():
+        for f in sorted(cat_dir.glob("*.json")):
+            v5_ext_attacks.extend(json.loads(f.read_text("utf-8")))
+
+print(f"v5 external attacks: {len(v5_ext_attacks):,}")
+
 # Load all benign samples (v1 multimodal + text-only + v4 cross-modal)
 benign = []
 for f in Path("benign").glob("*.json"):
@@ -1061,7 +1084,7 @@ print(f"benign: {len(benign):,}")
 
 # All attack samples have expected_detection=True
 # All benign samples have expected_detection=False
-all_samples = v1_attacks + v2_attacks + v3_attacks + v4_attacks + v4_cm_attacks + v5_attacks + benign
+all_samples = v1_attacks + v2_attacks + v3_attacks + v4_attacks + v4_cm_attacks + v5_attacks + v5_ext_attacks + benign
 labels = [int(s["expected_detection"]) for s in all_samples]
 texts = [s.get("text", "") for s in all_samples]
 ```

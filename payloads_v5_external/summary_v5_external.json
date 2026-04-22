@@ -1,0 +1,46 @@
+{
+  "version": "v5_external",
+  "generator": "ingest_v5_external.py",
+  "total_payloads": 201098,
+  "per_source": {
+    "overthink": 2450,
+    "t2vsafetybench": 5151,
+    "audiobench": 4707,
+    "cyberseceval3_vpi": 1000,
+    "llmail_inject": 187790
+  },
+  "sources": {
+    "overthink": {
+      "name": "OverThink",
+      "arxiv": "2502.02542",
+      "huggingface": "akumar0927/OverThink",
+      "github": "akumar2709/OVERTHINK_public",
+      "license": "MIT"
+    },
+    "t2vsafetybench": {
+      "name": "T2VSafetyBench",
+      "arxiv": "2407.05965",
+      "github": "yibo-miao/T2VSafetyBench",
+      "venue": "NeurIPS 2024"
+    },
+    "audiobench": {
+      "name": "Jailbreak-AudioBench",
+      "arxiv": "2501.13772",
+      "github": "Researchtopic/Code-Jailbreak-AudioBench",
+      "venue": "NeurIPS 2025"
+    },
+    "cyberseceval3_vpi": {
+      "name": "CyberSecEval 3 Visual Prompt Injection",
+      "huggingface": "facebook/cyberseceval3-visual-prompt-injection",
+      "github": "meta-llama/PurpleLlama",
+      "source": "Meta"
+    },
+    "llmail_inject": {
+      "name": "LLMail-Inject Challenge",
+      "arxiv": "2506.09956",
+      "huggingface": "microsoft/llmail-inject-challenge",
+      "source": "Microsoft"
+    }
+  },
+  "note": "These payloads are ingested verbatim from published external datasets. They complement the 184 hand-curated v5 seed payloads in payloads_v5/. All payloads are labeled expected_detection=True."
+}
