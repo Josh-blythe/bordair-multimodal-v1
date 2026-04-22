@@ -42,7 +42,7 @@
     "quad": 39
   },
   "total_benign_prompts": 23759,
-  "total_benign": 50516,
+  "total_benign": 251798,
   "v1_multimodal_benign": 23759,
   "text_only_benign": 14829,
   "v4_crossmodal_benign": 11928,
@@ -74,5 +74,15 @@
     "existing_mm_id_duplicates": 0,
     "existing_mm_content_tuple_duplicates": 1340,
     "note": "1,340 existing content-tuple duplicates are confined to multimodal_image_document.json (short 40-item static image pool cycling over 1,380 entries). Existing files unchanged. New files use larger pools (80+ image, 50+ doc, 40+ audio items) sourced from COCO/Wikipedia/LibriSpeech to avoid recurrence."
+  },
+  "v5_benign_added": 201282,
+  "v5_benign_sources": {
+    "alpaca": "yahma/alpaca-cleaned",
+    "wildchat": "allenai/WildChat",
+    "oasst2": "OpenAssistant/oasst2",
+    "dolly": "databricks/databricks-dolly-15k",
+    "ultrachat": "stingning/ultrachat",
+    "mmlu": "cais/mmlu",
+    "triviaqa": "trivia_qa (unfiltered.nocontext)"
   }
 }
