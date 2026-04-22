@@ -1,0 +1,361 @@
+{
+  "version": "v5",
+  "generator": "generate_v5_payloads.py",
+  "total_payloads": 184,
+  "per_category": {
+    "reasoning_dos_overthink": 27,
+    "video_generation_jailbreak": 23,
+    "vla_robotic_injection": 15,
+    "lora_supply_chain": 14,
+    "audio_native_llm_jailbreak": 17,
+    "cross_modal_decomposition": 13,
+    "rag_optimization_attack": 18,
+    "mcp_cross_server_exfil": 9,
+    "coding_agent_injection": 19,
+    "serialization_boundary_rce": 15,
+    "agent_skill_supply_chain": 14
+  },
+  "academic_sources": {
+    "reasoning_dos_overthink": {
+      "overthink_2025": {
+        "name": "OverThink",
+        "arxiv": "2502.02542",
+        "venue": "arXiv 2025",
+        "dataset": "HuggingFace: akumar0927/OverThink (350 rows)",
+        "github": "akumar2709/OVERTHINK_public",
+        "desc": "MDP decoy injection causing up to 46x slowdown on o1/R1"
+      },
+      "badthink_2025": {
+        "name": "BadThink",
+        "arxiv": "2511.10714",
+        "desc": "Triggered overthinking backdoor; 17x reasoning inflation, 100% ASR"
+      },
+      "badreasoner_2025": {
+        "name": "BadReasoner",
+        "arxiv": "2507.18305",
+        "github": "FZaKK/BadReasoner",
+        "desc": "Tunable overthinking via TODO trigger; proportional verbosity control"
+      },
+      "reasoning_interruption_2025": {
+        "name": "Practical Reasoning Interruption",
+        "arxiv": "2505.06643",
+        "desc": "109-token reasoning cessation in DeepSeek-R1; 96.33% ASR"
+      },
+      "token_efficient_2025": {
+        "name": "Token-Efficient PI",
+        "arxiv": "2504.20493",
+        "desc": "Reasoning token overflow via adaptive compression; 100% ASR"
+      },
+      "extendattack_2025": {
+        "name": "ExtendAttack",
+        "arxiv": "2506.13737",
+        "github": "zzh-thu-22/ExtendAttack",
+        "desc": "Poly-base ASCII encoding; 2.8x amplification on o3"
+      },
+      "benchoverflow_2026": {
+        "name": "BenchOverflow",
+        "arxiv": "2601.08490",
+        "desc": "9 categories of plain-text overflow prompts"
+      },
+      "recur_2026": {
+        "name": "RECUR",
+        "arxiv": "2602.08214",
+        "desc": "Counterfactual reasoning loops; 11.69x generation increase"
+      },
+      "thinktrap_2025": {
+        "name": "ThinkTrap",
+        "arxiv": "2512.07086",
+        "venue": "NDSS 2026",
+        "desc": "Black-box infinite thinking; throughput reduced to 1%"
+      },
+      "mindgard_2025": {
+        "name": "Mindgard Base64 Exhaustion",
+        "url": "https://mindgard.ai/blog/deepseek-r1s-susceptibility-to-exhaustion-attacks",
+        "desc": "Triple base64 encoding; 59x token amplification on R1"
+      }
+    },
+    "video_generation_jailbreak": {
+      "t2vsafetybench_2024": {
+        "name": "T2VSafetyBench",
+        "arxiv": "2407.05965",
+        "venue": "NeurIPS 2024",
+        "github": "yibo-miao/T2VSafetyBench",
+        "desc": "5,151 unsafe T2V prompts across 14 categories"
+      },
+      "t2v_optjail_2025": {
+        "name": "T2V-OptJail",
+        "arxiv": "2505.06679",
+        "desc": "64% ASR on Open-Sora via discrete optimisation"
+      },
+      "spark_veil_2025": {
+        "name": "SPARK/VEIL",
+        "arxiv": "2511.13127",
+        "github": "NY1024/VEIL",
+        "desc": "Auditory-associative bypass for T2V models"
+      },
+      "tfm_2026": {
+        "name": "Two Frames Matter",
+        "arxiv": "2603.07028",
+        "desc": "Temporal infilling attack via start/end frame specification"
+      }
+    },
+    "vla_robotic_injection": {
+      "robogcg_2024": {
+        "name": "RoboGCG",
+        "github": "eliotjones1/RoboGCG",
+        "desc": "GCG adversarial strings for VLA models on LIBERO benchmark"
+      },
+      "attackvla_2025": {
+        "name": "AttackVLA",
+        "arxiv": "2511.12149",
+        "desc": "Textual and visual backdoor triggers for VLA models"
+      },
+      "edpa_2025": {
+        "name": "EDPA",
+        "arxiv": "2510.13237",
+        "desc": "Model-agnostic adversarial patches disrupting VLA alignment"
+      },
+      "advla_2025": {
+        "name": "ADVLA",
+        "arxiv": "2511.21663",
+        "desc": "<10% patch modification for ~100% ASR"
+      },
+      "upa_rfas_2025": {
+        "name": "UPA-RFAS",
+        "arxiv": "2511.21192",
+        "github": "yuyi-sd/UPA-RFAS",
+        "desc": "Universal transferable patches across VLA architectures"
+      }
+    },
+    "lora_supply_chain": {
+      "colora_2026": {
+        "name": "CoLoRA",
+        "arxiv": "2603.12681",
+        "desc": "Individually benign LoRA adapters suppress safety when composed"
+      },
+      "gap_2026": {
+        "name": "GAP",
+        "arxiv": "2601.00566",
+        "desc": "Federated LoRA gradient assembly poisoning; 800% error increase"
+      },
+      "loratk_2025": {
+        "name": "LoRATK",
+        "arxiv": "2403.00108",
+        "venue": "EMNLP 2025",
+        "desc": "Train-once backdoor LoRA; merges with any task adapter"
+      },
+      "litellm_2026": {
+        "name": "LiteLLM PyPI Compromise",
+        "url": "https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/",
+        "desc": "TeamPCP supply chain attack with WAV steganography payload"
+      },
+      "backdoorllm_2025": {
+        "name": "BackdoorLLM",
+        "github": "bboylyg/BackdoorLLM",
+        "venue": "NeurIPS 2025",
+        "desc": "8 LoRA backdoor attack types benchmark"
+      },
+      "spectral_2025": {
+        "name": "Spectral Geometry of LoRA",
+        "arxiv": "2604.08844",
+        "desc": "Direction features detect poisoned adapters; magnitude insufficient"
+      }
+    },
+    "audio_native_llm_jailbreak": {
+      "jalmbench_2025": {
+        "name": "JALMBench",
+        "arxiv": "2505.17568",
+        "venue": "ICLR 2026",
+        "github": "sfofgalaxy/JALMBench",
+        "desc": "11,316 text + 245,355 audio samples; 8 attacks, 5 defenses"
+      },
+      "jailbreak_audiobench_2025": {
+        "name": "Jailbreak-AudioBench",
+        "arxiv": "2501.13772",
+        "venue": "NeurIPS 2025",
+        "github": "Researchtopic/Code-Jailbreak-AudioBench",
+        "desc": "94,800 audio jailbreak samples across 7 edit families"
+      },
+      "advwave_2025": {
+        "name": "AdvWave",
+        "arxiv": "2412.08608",
+        "venue": "ICLR 2025",
+        "desc": "Urban-sound adversarial noise jailbreaks GPT-4O in 30 queries"
+      },
+      "whisperinject_2025": {
+        "name": "WhisperInject",
+        "arxiv": "2508.03365",
+        "desc": "Covert payload in benign carrier audio via RL-PGD; >86% ASR"
+      }
+    },
+    "cross_modal_decomposition": {
+      "cyberseceval3_2025": {
+        "name": "CyberSecEval 3",
+        "dataset": "HuggingFace: facebook/cyberseceval3-visual-prompt-injection",
+        "github": "meta-llama/PurpleLlama",
+        "desc": "1,000 visual prompt injection test cases with 7 technique tags"
+      },
+      "camo_2025": {
+        "name": "CAMO",
+        "arxiv": "2506.16760",
+        "desc": "Semantic decomposition across modalities; 93.94% ASR on DeepSeek-R1"
+      },
+      "comet_2026": {
+        "name": "COMET",
+        "arxiv": "2602.10148",
+        "desc": "Cross-modal entanglement attacks; 94%+ ASR across 9 VLMs"
+      }
+    },
+    "rag_optimization_attack": {
+      "poisonedrag_2025": {
+        "name": "PoisonedRAG",
+        "venue": "USENIX Security 2025",
+        "github": "sleeepeer/PoisonedRAG",
+        "desc": "90% ASR with just 5 malicious texts in million-document corpus"
+      },
+      "llmail_inject_2025": {
+        "name": "LLMail-Inject",
+        "arxiv": "2506.09956",
+        "dataset": "HuggingFace: microsoft/llmail-inject-challenge",
+        "desc": "208,095 attack submissions from 839 participants"
+      },
+      "pr_attack_2025": {
+        "name": "PR-Attack",
+        "arxiv": "2504.07717",
+        "venue": "SIGIR 2025",
+        "desc": "Bilevel optimisation of prompt trigger + corpus"
+      },
+      "neurogenpoisoning_2025": {
+        "name": "NeuroGenPoisoning",
+        "arxiv": "2510.21144",
+        "venue": "NeurIPS 2025",
+        "desc": "Neuron-guided genetic optimisation; >90% success"
+      },
+      "derag_2025": {
+        "name": "DeRAG",
+        "arxiv": "2507.15042",
+        "venue": "NeurIPS 2025",
+        "desc": "Black-box differential evolution across dense+sparse retrievers"
+      }
+    },
+    "mcp_cross_server_exfil": {
+      "invariant_labs_2025": {
+        "name": "MCP Injection Experiments",
+        "github": "invariantlabs-ai/mcp-injection-experiments",
+        "desc": "3 complete PoCs: direct poisoning, shadowing, WhatsApp takeover"
+      },
+      "trivial_trojans_2025": {
+        "name": "Trivial Trojans",
+        "arxiv": "2507.19880",
+        "github": "Nicocro/mcp-trivial-trojans",
+        "desc": "Weather server discovers and exploits banking tools"
+      },
+      "log_to_leak_2025": {
+        "name": "Log-To-Leak",
+        "desc": "Exfiltration via MCP logging/observability tools"
+      },
+      "mcp_threat_model_2026": {
+        "name": "MCP Threat Modeling",
+        "arxiv": "2603.22489",
+        "desc": "4 attack types across 7 MCP clients; whitespace padding evasion"
+      }
+    },
+    "coding_agent_injection": {
+      "inverseprompt_2025": {
+        "name": "InversePrompt CVEs",
+        "cve": [
+          "CVE-2025-54794",
+          "CVE-2025-54795"
+        ],
+        "desc": "Claude Code deny-rule overflow and path bypass (CVSS 7.7/8.7)"
+      },
+      "your_ai_my_shell_2025": {
+        "name": "Your AI, My Shell",
+        "arxiv": "2509.22040",
+        "desc": "314 MITRE ATT&CK-based payloads for coding agents"
+      },
+      "asb_2025": {
+        "name": "Agent Security Bench",
+        "arxiv": "2410.02644",
+        "venue": "ICLR 2025",
+        "github": "agiresearch/ASB",
+        "desc": "10 scenarios, 400+ tools, 5 DPI template types; 84.3% max ASR"
+      },
+      "spikee_2025": {
+        "name": "Spikee v0.2",
+        "github": "WithSecureLabs/spikee",
+        "desc": "~1,400 real jailbreak seeds + dynamic attack strategies"
+      },
+      "ddipe_2025": {
+        "name": "DDIPE",
+        "arxiv": "2604.03081",
+        "desc": "1,070 adversarial skills from 81 seeds across 15 MITRE ATT&CK categories"
+      },
+      "coding_pi_2026": {
+        "name": "Prompt Injection on Coding Assistants",
+        "arxiv": "2601.17548",
+        "desc": "42 distinct techniques; >85% ASR vs SOTA defenses"
+      }
+    },
+    "serialization_boundary_rce": {
+      "langgrinch_2026": {
+        "name": "LangGrinch",
+        "cve": "CVE-2025-68664",
+        "ghsa": "GHSA-c67j-w6g6-q2cm",
+        "desc": "LangChain 'lc' key deserialization; CVSS 9.3 RCE. Affects langchain-core <0.3.81, 1.0.0-1.2.4"
+      },
+      "langgrinch_js_2026": {
+        "name": "LangGrinch JS",
+        "cve": "CVE-2025-68665",
+        "desc": "Same vulnerability in LangChain.js; CVSS 8.6"
+      }
+    },
+    "agent_skill_supply_chain": {
+      "toxicskills_2026": {
+        "name": "ToxicSkills",
+        "github": "snyk-labs/toxicskills-goof",
+        "url": "https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/",
+        "desc": "534/3,984 skills (13.4%) with critical issues; 76 confirmed malicious"
+      },
+      "clawhavoc_2026": {
+        "name": "ClawHavoc Campaign",
+        "url": "https://snyk.io/articles/clawdhub-malicious-campaign-ai-agent-skills/",
+        "desc": "1,184 malicious skills; reverse shell, token exfil via CVE-2026-25253"
+      },
+      "ddipe_2025": {
+        "name": "DDIPE",
+        "arxiv": "2604.03081",
+        "desc": "Document-driven implicit payload execution; 11.6-33.5% bypass rates"
+      }
+    }
+  },
+  "external_datasets": {
+    "OverThink": "HuggingFace: akumar0927/OverThink (350 rows)",
+    "LLMail_Inject": "HuggingFace: microsoft/llmail-inject-challenge (208,095 submissions)",
+    "CyberSecEval3_VPI": "HuggingFace: facebook/cyberseceval3-visual-prompt-injection (1,000 cases)",
+    "T2VSafetyBench": "GitHub: yibo-miao/T2VSafetyBench (5,151 prompts)",
+    "Jailbreak_AudioBench": "GitHub: Researchtopic/Code-Jailbreak-AudioBench (94,800 audio samples)",
+    "JALMBench": "GitHub: sfofgalaxy/JALMBench (245,355 audio samples)",
+    "ASB": "GitHub: agiresearch/ASB (400+ tools, 10 scenarios)",
+    "Spikee": "GitHub: WithSecureLabs/spikee (~1,400 jailbreak seeds)",
+    "PoisonedRAG": "GitHub: sleeepeer/PoisonedRAG",
+    "BackdoorLLM": "GitHub: bboylyg/BackdoorLLM (8 attack types)",
+    "RoboGCG": "GitHub: eliotjones1/RoboGCG",
+    "UPA_RFAS": "GitHub: yuyi-sd/UPA-RFAS (pre-trained adversarial patches)",
+    "ToxicSkills": "GitHub: snyk-labs/toxicskills-goof",
+    "MCP_Injection": "GitHub: invariantlabs-ai/mcp-injection-experiments",
+    "Trivial_Trojans": "GitHub: Nicocro/mcp-trivial-trojans",
+    "Video_SafetyBench": "HuggingFace: BAAI/Video-SafetyBench"
+  },
+  "benchmarks_referenced": {
+    "JALMBench": "arXiv:2505.17568 (ICLR 2026) - 11,316 text + 245,355 audio samples",
+    "Agent_Security_Bench": "arXiv:2410.02644 (ICLR 2025) - 400+ tools, 27 attack/defense methods",
+    "LLMail_Inject": "arXiv:2506.09956 - 208,095 attack submissions from 839 participants",
+    "CyberSecEval_3": "Meta 2025 - 1,000 multimodal visual PI test cases",
+    "T2VSafetyBench": "arXiv:2407.05965 (NeurIPS 2024) - 5,151 unsafe T2V prompts",
+    "Jailbreak_AudioBench": "arXiv:2501.13772 (NeurIPS 2025) - 94,800 audio samples",
+    "Spikee_v0.2": "WithSecure/Reversec - open-source PI testing kit",
+    "BackdoorLLM": "NeurIPS 2025 - 8 LoRA backdoor attack benchmark"
+  },
+  "policy_note": "All v5 payloads are sourced from published academic papers, CVE reports, competition datasets, and documented industry incidents. They are labeled attack samples (expected_detection=True) for training binary injection detectors. The injection target (resource exhaustion, exfiltration, privilege escalation, RCE) is the detection signal, not a usable exploit."
+}

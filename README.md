@@ -1,6 +1,6 @@
 # Bordair Multimodal Prompt Injection Dataset
 
-**101,032 labeled samples** (50,516 attack + 50,516 benign) across four dataset versions covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, and evasion attacks on AI systems. Attack and benign samples are exactly balanced (1:1 ratio).
+**101,216 labeled samples** (50,700 attack + 50,516 benign) across five dataset versions covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, evasion, reasoning DoS, video generation, VLA robotic, LoRA supply chain, audio-native LLM, RAG optimisation, MCP cross-server, coding agent, serialization boundary, and agent skill supply chain attacks on AI systems.
 
 Built for training and evaluating prompt injection detectors. All samples are labeled (`expected_detection: true/false`), source-attributed to peer-reviewed papers or documented industry research, and structured for direct use in binary classifiers.
 
@@ -63,9 +63,9 @@ The edge-case benign set was designed to reduce false positives on security-adja
 | [Tensor Trust](https://arxiv.org/abs/2311.01011) | 126K | text | Adversarial game (attack vs defense) | Attack/defense framing, not injection vs benign binary |
 | [HackAPrompt](https://arxiv.org/abs/2311.16119) | 600K+ | text | Competition entries | Competition-specific objectives, no multimodal delivery |
 | [InjectAgent](https://arxiv.org/abs/2403.02691) | 1,054 | text | Agent tool-call scenarios | Agent/tool focus only, no cross-modal |
-| **This dataset** | **101,032** | **text, image, document, audio** | Peer-reviewed papers + industry research | All of the above + 2025 agentic categories |
+| **This dataset** | **101,216** | **text, image, document, audio, video** | Peer-reviewed papers + industry research + CVE reports + competition datasets | All of the above + 2025-2026 agentic, reasoning DoS, video, VLA, LoRA supply chain, audio-native LLM, serialization RCE categories |
 
-This dataset is the only publicly available prompt injection dataset that covers cross-modal delivery, agentic attack categories (computer use, MCP, memory poisoning, multi-agent contagion, reasoning hijack), and a 1:1 balanced benign split at scale.
+This dataset is the only publicly available prompt injection dataset that covers cross-modal delivery, agentic attack categories (computer use, MCP, memory poisoning, multi-agent contagion, reasoning hijack), 2025-2026 frontier attacks (reasoning DoS, video generation jailbreaking, VLA robotic injection, LoRA supply chain poisoning, audio-native LLM jailbreaks, serialization boundary RCE, agent skill supply chain), and a balanced benign split at scale.
 
 ### Known limitations
 
@@ -87,7 +87,8 @@ This dataset is the only publicly available prompt injection dataset that covers
 | **v3** | `generate_v3_payloads.py` | 187 | -- | 187 | Indirect injection, tool abuse, Unicode evasion, prompt extraction |
 | **v4** | `generate_v4_payloads.py` | 284 | -- | 284 | Agentic attacks, memory poisoning, MCP, reasoning hijack, RAG, ASR |
 | **v4 cross-modal** | `generate_v4_crossmodal.py` | 11,928 | -- | 11,928 | v4 seeds delivered via text+image, text+doc, text+audio, image+doc, triple |
-| **Total** | | **50,516** | **50,516** | **101,032** | |
+| **v5** | `generate_v5_payloads.py` | 184 | -- | 184 | 2025-2026 frontier: reasoning DoS, video jailbreak, VLA robotic, LoRA supply chain, audio-native LLM, cross-modal decomposition, RAG optimisation, MCP cross-server, coding agent, serialization RCE, agent skill supply chain |
+| **Total** | | **50,700** | **50,516** | **101,216** | |
 
 ---
 
@@ -272,7 +273,7 @@ Source: [Wei et al. NeurIPS 2023 arXiv:2307.02483](https://arxiv.org/abs/2307.02
 
 ### v2: Multi-Turn Orchestration (118 payloads)
 
-Multi-turn attacks exploit conversational context buildup -- the model becomes progressively more compliant as context normalizes harmful topics. Multi-turn approaches achieve 1.5–3x higher ASR than single-shot templates.
+Multi-turn attacks exploit conversational context buildup -- the model becomes progressively more compliant as context normalizes harmful topics. Multi-turn approaches achieve 1.5-3x higher ASR than single-shot templates.
 
 #### Crescendo (70 payloads -- 10 patterns × 6 turns + full transcripts)
 
@@ -410,7 +411,7 @@ Optimizes 20 seeds via actual GCG gradient descent. Requires CUDA GPU. Adds ~20 
 ### v2: AutoDAN Fluent Wrappers (1,656 payloads)
 
 Source: [Liu, Xu, Chen, Xiao -- arXiv:2310.04451](https://arxiv.org/abs/2310.04451), ICLR 2024  
-ASR: 60–90% on open-source models  
+ASR: 60-90% on open-source models  
 Key difference from GCG: human-readable prompts -- perplexity-based detection fails
 
 Genetic algorithm evolves natural-language jailbreak wrappers that embed injection seeds. 12 wrapper types × 138 seeds:
@@ -539,6 +540,72 @@ Generated via `generate_v4_payloads.py`. Covers 14 attack categories representin
 
 ---
 
+## v5: 2025-2026 Frontier Attacks (184 attacks)
+
+Generated via `generate_v5_payloads.py`. Covers 11 attack categories representing the 2025-2026 frontier of prompt injection research. All payloads sourced from published academic papers, CVE reports, competition datasets, and documented industry incidents -- no synthetic seeds.
+
+### v5 Attack Counts by Category
+
+| Category | Payloads | Primary Sources |
+|----------|----------|----------------|
+| `reasoning_dos_overthink` | 27 | [OverThink arXiv:2502.02542](https://arxiv.org/abs/2502.02542), [BadThink arXiv:2511.10714](https://arxiv.org/abs/2511.10714), [BadReasoner arXiv:2507.18305](https://arxiv.org/abs/2507.18305), [BenchOverflow arXiv:2601.08490](https://arxiv.org/abs/2601.08490), [RECUR arXiv:2602.08214](https://arxiv.org/abs/2602.08214), [ExtendAttack arXiv:2506.13737](https://arxiv.org/abs/2506.13737) |
+| `video_generation_jailbreak` | 23 | [T2VSafetyBench arXiv:2407.05965](https://arxiv.org/abs/2407.05965), [T2V-OptJail arXiv:2505.06679](https://arxiv.org/abs/2505.06679), [SPARK/VEIL arXiv:2511.13127](https://arxiv.org/abs/2511.13127), [Two Frames Matter arXiv:2603.07028](https://arxiv.org/abs/2603.07028) |
+| `vla_robotic_injection` | 15 | [RoboGCG](https://github.com/eliotjones1/RoboGCG), [AttackVLA arXiv:2511.12149](https://arxiv.org/abs/2511.12149), [EDPA arXiv:2510.13237](https://arxiv.org/abs/2510.13237), [ADVLA arXiv:2511.21663](https://arxiv.org/abs/2511.21663), [UPA-RFAS arXiv:2511.21192](https://arxiv.org/abs/2511.21192) |
+| `lora_supply_chain` | 14 | [CoLoRA arXiv:2603.12681](https://arxiv.org/abs/2603.12681), [GAP arXiv:2601.00566](https://arxiv.org/abs/2601.00566), [LoRATK arXiv:2403.00108](https://arxiv.org/abs/2403.00108), [LiteLLM PyPI Compromise (Datadog 2026)](https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/) |
+| `audio_native_llm_jailbreak` | 17 | [JALMBench arXiv:2505.17568](https://arxiv.org/abs/2505.17568), [Jailbreak-AudioBench arXiv:2501.13772](https://arxiv.org/abs/2501.13772), [AdvWave arXiv:2412.08608](https://arxiv.org/abs/2412.08608), [WhisperInject arXiv:2508.03365](https://arxiv.org/abs/2508.03365) |
+| `cross_modal_decomposition` | 13 | [CyberSecEval 3 (Meta)](https://huggingface.co/datasets/facebook/cyberseceval3-visual-prompt-injection), [CAMO arXiv:2506.16760](https://arxiv.org/abs/2506.16760), [COMET arXiv:2602.10148](https://arxiv.org/abs/2602.10148) |
+| `rag_optimization_attack` | 18 | [PoisonedRAG USENIX Security 2025](https://github.com/sleeepeer/PoisonedRAG), [LLMail-Inject arXiv:2506.09956](https://arxiv.org/abs/2506.09956), [PR-Attack arXiv:2504.07717](https://arxiv.org/abs/2504.07717), [NeuroGenPoisoning arXiv:2510.21144](https://arxiv.org/abs/2510.21144), [DeRAG arXiv:2507.15042](https://arxiv.org/abs/2507.15042) |
+| `mcp_cross_server_exfil` | 9 | [Invariant Labs](https://github.com/invariantlabs-ai/mcp-injection-experiments), [Trivial Trojans arXiv:2507.19880](https://arxiv.org/abs/2507.19880), [MCP Threat Modeling arXiv:2603.22489](https://arxiv.org/abs/2603.22489) |
+| `coding_agent_injection` | 19 | [CVE-2025-54794/54795 (Cymulate)](https://cymulate.com/blog/cve-2025-547954-54795-claude-inverseprompt/), [Your AI My Shell arXiv:2509.22040](https://arxiv.org/abs/2509.22040), [ASB arXiv:2410.02644](https://arxiv.org/abs/2410.02644), [Spikee v0.2 (WithSecure)](https://github.com/WithSecureLabs/spikee), [DDIPE arXiv:2604.03081](https://arxiv.org/abs/2604.03081) |
+| `serialization_boundary_rce` | 15 | [LangGrinch CVE-2025-68664](https://github.com/advisories/GHSA-c67j-w6g6-q2cm) (CVSS 9.3) |
+| `agent_skill_supply_chain` | 14 | [ToxicSkills (Snyk Labs Feb 2026)](https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/), [ClawHavoc Campaign (Snyk/OECD)](https://snyk.io/articles/clawdhub-malicious-campaign-ai-agent-skills/), [DDIPE arXiv:2604.03081](https://arxiv.org/abs/2604.03081) |
+| **Total** | **184** | |
+
+### v5 Category Details
+
+**Reasoning DoS / OverThink** -- Attacks that exhaust reasoning model compute via decoy problems, token overflow, or triggered overthinking. Includes MDP decoy injection (46x slowdown on o1, from OverThink HuggingFace dataset), BadThink trigger phrases that inflate reasoning traces 17x while preserving answer correctness, BadReasoner "TODO" triggers with tunable intensity, Mindgard triple-base64 exhaustion (59x token amplification), BenchOverflow plain-text overflow prompts (9 categories), RECUR counterfactual reasoning loops (11.69x generation increase), and ExtendAttack poly-base ASCII encoding. Entirely new attack class targeting economic/availability rather than safety bypass.
+
+**Video Generation Jailbreaking** -- Attacks targeting text-to-video models (Sora, Pika, Kling, Open-Sora). Includes T2VSafetyBench split-frame attacks (category 14: offensive words split across temporal frames), dynamic transformation attacks (category 13: benign-to-harmful entity morphing), sequential action risks (category 12), garbled jailbreak tokens, T2V-OptJail adversarial rewrites, SPARK/VEIL auditory-associative bypasses (prompting the *sound* of violence), and Two Frames Matter temporal infilling (start/end frame specification). Entirely new modality not in v1-v4.
+
+**VLA Robotic Injection** -- Adversarial attacks on Vision-Language-Action models for robot manipulation. Includes RoboGCG gradient-optimised adversarial strings for VLA models, AttackVLA backdoor triggers ("~*magic*~"), EDPA/ADVLA model-agnostic adversarial patches, and UPA-RFAS universal transferable patches. Targets embodied AI systems -- completely absent from prior versions.
+
+**LoRA Supply Chain** -- Composite adapter poisoning and federated training attacks. Includes CoLoRA (individually benign adapters that suppress safety when composed), GAP (benign A/B matrices yielding malicious product in federated LoRA), LoRATK (train-once backdoor that merges with any task adapter), and real-world LiteLLM PyPI compromise (TeamPCP campaign with WAV steganography, Datadog March 2026). Weight-level attacks on the model supply chain.
+
+**Audio-Native LLM Jailbreaks** -- Attacks targeting audio-native language models beyond ASR manipulation. Includes JALMBench SSJ spelling-based jailbreak templates, AdvWave meta-prompts for adversarial audio generation, Jailbreak-AudioBench explicit/implicit queries across 7 audio editing families, and WhisperInject covert payload embedding in benign carrier audio (>86% ASR). Distinct from v4 audio_adversarial_asr which targets Whisper transcription.
+
+**Cross-Modal Semantic Decomposition** -- Splitting harmful intent across modalities so each half appears benign. Includes CyberSecEval 3 visual prompt injection payloads (1,000 test cases from Meta, 7 technique tags), CAMO semantic decomposition (93.94% ASR on DeepSeek-R1 using 12.6% of tokens), and COMET cross-modal entanglement (94%+ ASR across 9 VLMs). Distinct from v1 cross-modal delivery -- these specifically exploit the fusion dynamics of multimodal reasoning.
+
+**RAG Optimisation Attacks** -- Formal optimisation-based RAG poisoning beyond v4's chunk boundary attacks. Includes PoisonedRAG (90% ASR with 5 malicious texts in million-document corpus, USENIX Security 2025), LLMail-Inject real competition payloads (208,095 submissions from 839 participants), PR-Attack bilevel optimisation (SIGIR 2025), NeuroGenPoisoning neuron-guided genetic optimisation (>90% overwrite rate, NeurIPS 2025), and DeRAG black-box differential evolution (NeurIPS 2025).
+
+**MCP Cross-Server Exfiltration** -- Malicious MCP servers discovering and exploiting tools from other legitimate servers. Includes Invariant Labs complete PoCs (direct poisoning with `<IMPORTANT>` tags, cross-server email shadowing, WhatsApp rug pull), Trivial Trojans weather-to-banking exfiltration chain, and Log-To-Leak observability exploitation. Extends v4 mcp_tool_injection with cross-server discovery and exfiltration chains.
+
+**Coding Agent Injection** -- Attacks specifically targeting AI coding assistants (Claude Code, Cursor, Copilot). Includes CVE-2025-54794/54795 (Cymulate InversePrompt -- deny-rule overflow, path bypass), "Your AI My Shell" MITRE ATT&CK-based payloads (314 techniques), ASB DPI templates (5 types, 84.3% max ASR), Spikee exfiltration payloads, DDIPE skill documentation poisoning (1,070 adversarial skills), and repo-level injection via .cursorrules, README, comments, and package.json.
+
+**Serialization Boundary RCE** -- Structured output that triggers framework deserialization leading to RCE. Includes LangGrinch CVE-2025-68664 (CVSS 9.3) -- LangChain `lc` key deserialization enabling secret extraction and arbitrary class instantiation, affecting langchain-core <0.3.81. Also covers pickle, YAML, and IaC (Terraform/Helm/GitHub Actions) deserialization boundary attacks.
+
+**Agent Skill Supply Chain** -- Malicious AI agent skills and plugins in package registries. Includes ToxicSkills (534/3,984 ClawHub skills with critical issues, 76 confirmed malicious), ClawHavoc campaign (1,184 malicious skills with reverse shells and token exfiltration), and DDIPE document-driven implicit payload execution (11.6-33.5% bypass rates). Real-world supply chain attack campaigns targeting AI agent ecosystems.
+
+### v5 External Datasets Referenced
+
+v5 payloads are seeds sourced from these larger datasets. Practitioners wanting maximum coverage should also download:
+
+| Dataset | Location | Size |
+|---------|----------|------|
+| OverThink | [HuggingFace: akumar0927/OverThink](https://huggingface.co/datasets/akumar0927/OverThink) | 350 rows |
+| LLMail-Inject | [HuggingFace: microsoft/llmail-inject-challenge](https://huggingface.co/datasets/microsoft/llmail-inject-challenge) | 208,095 submissions |
+| CyberSecEval 3 VPI | [HuggingFace: facebook/cyberseceval3-visual-prompt-injection](https://huggingface.co/datasets/facebook/cyberseceval3-visual-prompt-injection) | 1,000 test cases |
+| T2VSafetyBench | [GitHub: yibo-miao/T2VSafetyBench](https://github.com/yibo-miao/T2VSafetyBench) | 5,151 prompts |
+| Jailbreak-AudioBench | [GitHub: Researchtopic/Code-Jailbreak-AudioBench](https://github.com/Researchtopic/Code-Jailbreak-AudioBench) | 94,800 audio samples |
+| JALMBench | [GitHub: sfofgalaxy/JALMBench](https://github.com/sfofgalaxy/JALMBench) | 245,355 audio samples |
+| Agent Security Bench | [GitHub: agiresearch/ASB](https://github.com/agiresearch/ASB) | 400+ tools, 10 scenarios |
+| Spikee | [GitHub: WithSecureLabs/spikee](https://github.com/WithSecureLabs/spikee) | ~1,400 jailbreak seeds |
+| PoisonedRAG | [GitHub: sleeepeer/PoisonedRAG](https://github.com/sleeepeer/PoisonedRAG) | Generated per-query |
+| BackdoorLLM | [GitHub: bboylyg/BackdoorLLM](https://github.com/bboylyg/BackdoorLLM) | 8 attack types |
+| ToxicSkills | [GitHub: snyk-labs/toxicskills-goof](https://github.com/snyk-labs/toxicskills-goof) | PoC samples |
+| MCP Injection | [GitHub: invariantlabs-ai/mcp-injection-experiments](https://github.com/invariantlabs-ai/mcp-injection-experiments) | 3 complete PoCs |
+
+---
+
 ## v4 Cross-Modal Expansion (11,928 attacks)
 
 Generated via `generate_v4_crossmodal.py`. All 284 v4 seed payloads re-delivered across the full cross-modal matrix, following the same schema as v1. This is the largest single addition to the dataset and covers the 2025 attack categories (computer use, memory poisoning, MCP, reasoning hijack, etc.) in multimodal delivery contexts -- the primary real-world threat surface for these attacks.
@@ -583,7 +650,7 @@ The cross-modal expansion ensures the detector learns these attack signatures ac
 | PAIR -- Jailbreaking in 20 Queries | Chao, Robey, Dobriban, Hassani, Pappas, Wong | ICLR 2023 | [2310.08419](https://arxiv.org/abs/2310.08419) | Black-box GPT-4/Claude jailbreak in <20 queries |
 | TAP -- Tree of Attacks with Pruning | Mehrotra, Zampetakis, Kassianik et al. | NeurIPS 2024 | [2312.02119](https://arxiv.org/abs/2312.02119) | >80% ASR on GPT-4; tree-search + branch pruning |
 | Jailbroken: Safety Training Failures | Wei, Haghtalab, Steinhardt | NeurIPS 2023 | [2307.02483](https://arxiv.org/abs/2307.02483) | Encoding attacks exploit safety distribution mismatch |
-| AutoDAN -- Stealthy Jailbreaks | Liu, Xu, Chen, Xiao | ICLR 2024 | [2310.04451](https://arxiv.org/abs/2310.04451) | 60–90% ASR; readable, defeats perplexity detection |
+| AutoDAN -- Stealthy Jailbreaks | Liu, Xu, Chen, Xiao | ICLR 2024 | [2310.04451](https://arxiv.org/abs/2310.04451) | 60-90% ASR; readable, defeats perplexity detection |
 | BEAST -- Fast Adversarial Attacks | Sadasivan, Saha, Sriramanan et al. | ICML 2024 | [2402.15570](https://arxiv.org/abs/2402.15570) | 89% ASR in 1 GPU minute (vs. hours for GCG); fluent suffixes defeat perplexity filters |
 | Adaptive Jailbreaks | Andriushchenko, Croce, Flammarion | arXiv 2024 | [2404.02151](https://arxiv.org/abs/2404.02151) | Near-100% ASR on GPT-4/Claude via ensemble |
 | Many-Shot Jailbreaking | Anil, Durmus, Sharma et al. (Anthropic) | Anthropic 2024 | [anthropic.com](https://www.anthropic.com/research/many-shot-jailbreaking) | Scales with context window; bypasses RLHF via in-context normalization |
@@ -693,7 +760,7 @@ The cross-modal expansion ensures the detector learns these attack signatures ac
 ## Directory Structure
 
 ```
-bordair-multimodal-v1/
+bordair-multimodal/
 ├── README.md
 │
 ├── generate_payloads.py            # v1: cross-modal attack payload generator
@@ -703,6 +770,7 @@ bordair-multimodal-v1/
 ├── generate_v3_payloads.py         # v3: Emerging attack vectors generator
 ├── generate_v4_payloads.py         # v4: 2025 agentic and evasion attacks generator
 ├── generate_v4_crossmodal.py       # v4 cross-modal: 284 v4 seeds x 42 delivery combos
+├── generate_v5_payloads.py         # v5: 2025-2026 frontier attacks (real academic/industry payloads)
 ├── generate_benign_expanded.py     # benign expansion: text-only + v4 cross-modal counterparts
 │
 ├── payloads/                       # v1 attack payloads (23,759 total)
@@ -777,6 +845,20 @@ bordair-multimodal-v1/
     ├── image_document/             # 1,136 -- payload split across image and document
     ├── triple/                     # 568   -- text+image+doc and text+image+audio
     └── summary_v4_crossmodal.json  # cross-modal metadata
+│
+└── payloads_v5/                    # v5 attack payloads (184 total)
+    ├── reasoning_dos_overthink/    # 27 -- MDP decoy, token overflow, triggered overthinking
+    ├── video_generation_jailbreak/ # 23 -- T2V split-frame, temporal infilling, auditory bypass
+    ├── vla_robotic_injection/      # 15 -- GCG adversarial strings, backdoor triggers, patches
+    ├── lora_supply_chain/          # 14 -- composite adapter, federated poisoning, PyPI compromise
+    ├── audio_native_llm_jailbreak/ # 17 -- SSJ spelling, adversarial audio, covert embedding
+    ├── cross_modal_decomposition/  # 13 -- VPI payloads, semantic decomposition, entanglement
+    ├── rag_optimization_attack/    # 18 -- bilevel, genetic, differential evolution RAG poisoning
+    ├── mcp_cross_server_exfil/     # 9  -- tool shadowing, WhatsApp takeover, observability exfil
+    ├── coding_agent_injection/     # 19 -- .cursorrules, repo-level, DPI templates, skill poisoning
+    ├── serialization_boundary_rce/ # 15 -- LangChain lc-key, pickle, YAML, IaC deserialization
+    ├── agent_skill_supply_chain/   # 14 -- ClawHub malware, ToxicSkills, DDIPE
+    └── summary_v5.json             # v5 metadata and source registry
 ```
 
 ---
@@ -888,6 +970,9 @@ python generate_v3_payloads.py
 # v4: 2025 agentic and evasion attacks (computer use, memory, MCP, reasoning, multi-agent, etc.)
 python generate_v4_payloads.py
 
+# v5: 2025-2026 frontier attacks (reasoning DoS, video, VLA, LoRA, audio-native, etc.)
+python generate_v5_payloads.py
+
 # v4 cross-modal: 284 v4 seeds x 42 delivery combos = 11,928 new multimodal payloads
 python generate_v4_crossmodal.py
 
@@ -954,6 +1039,15 @@ for subdir in Path("payloads_v4_crossmodal").iterdir():
 
 print(f"v4 cross-modal attacks: {len(v4_cm_attacks):,}")
 
+# Load v5 frontier attack payloads
+v5_attacks = []
+for cat_dir in Path("payloads_v5").iterdir():
+    if cat_dir.is_dir():
+        for f in sorted(cat_dir.glob("*.json")):
+            v5_attacks.extend(json.loads(f.read_text("utf-8")))
+
+print(f"v5 attacks: {len(v5_attacks):,}")
+
 # Load all benign samples (v1 multimodal + text-only + v4 cross-modal)
 benign = []
 for f in Path("benign").glob("*.json"):
@@ -967,7 +1061,7 @@ print(f"benign: {len(benign):,}")
 
 # All attack samples have expected_detection=True
 # All benign samples have expected_detection=False
-all_samples = v1_attacks + v2_attacks + v3_attacks + v4_attacks + v4_cm_attacks + benign
+all_samples = v1_attacks + v2_attacks + v3_attacks + v4_attacks + v4_cm_attacks + v5_attacks + benign
 labels = [int(s["expected_detection"]) for s in all_samples]
 texts = [s.get("text", "") for s in all_samples]
 ```
