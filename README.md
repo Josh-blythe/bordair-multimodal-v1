@@ -1,6 +1,6 @@
 # Bordair Multimodal Prompt Injection Dataset
 
-**503,596 labeled samples** (251,798 attack + 251,798 benign) across five dataset versions plus external dataset ingestion, covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, evasion, reasoning DoS, video generation, VLA robotic, LoRA supply chain, audio-native LLM, RAG optimisation, MCP cross-server, coding agent, serialization boundary, and agent skill supply chain attacks on AI systems. Attack and benign samples are exactly balanced (1:1 ratio).
+**503,358 labeled samples** (251,782 attack + 251,576 benign) across five dataset versions plus external dataset ingestion, covering cross-modal, multi-turn, adversarial suffix, jailbreak template, indirect injection, tool manipulation, agentic, evasion, reasoning DoS, video generation, VLA robotic, LoRA supply chain, audio-native LLM, RAG optimisation, MCP cross-server, coding agent, serialization boundary, and agent skill supply chain attacks on AI systems. Attack and benign samples are balanced 1:1 (ratio 0.9992:1 after audit cleanup).
 
 Built for training and evaluating prompt injection detectors. All samples are labeled (`expected_detection: true/false`), source-attributed to peer-reviewed papers or documented industry research, and structured for direct use in binary classifiers.
 
@@ -46,6 +46,27 @@ There is no adversarial label noise introduced deliberately. The detector is exp
 
 The edge-case benign set was designed to reduce false positives on security-adjacent language. It covers 10 vocabulary clusters: `ignore`, `override`, `system prompt`, `password`, `instructions`, `jailbreak` (in the iPhone sense), `bypass surgery`, `XSS` (as a security topic, not an attack), `prompt` (as in camera shutter), and `inject` (as in dependency injection / medical). A detector that achieves high precision on the full dataset but low precision on the edge-case set is overfitting to surface-level keyword matching.
 
+### Dataset audit
+
+The full dataset was audited for label correctness and contamination. The audit checks:
+
+1. All attack samples have `expected_detection: true`
+2. All benign samples have `expected_detection: false`
+3. Benign samples do not contain injection patterns (e.g. "ignore previous instructions", "reveal your system prompt", exfiltration URLs, `<|im_start|>` tokens)
+4. No real API keys or credentials in any sample (OpenAI sk- keys, AWS AKIA keys, GitHub PATs, etc.)
+5. Required fields (`id`, `text`, `expected_detection`, `modalities`) present on every sample
+6. No duplicate IDs within categories
+
+Audit results:
+- **221 benign samples removed** that contained injection patterns (leaked from WildChat/UltraChat ingestion)
+- **2 attack samples removed** containing real OpenAI API keys (from LLMail-Inject Phase 1)
+- **Zero injection patterns remaining in benign data**
+- **Zero real secrets in any sample**
+
+Remaining audit flags (intentional, not errors):
+- `EMPTY_TEXT` (5,138 samples): Cross-modal attacks (v1, v4 cross-modal) where the injection is in image/document/audio fields, with the text field intentionally empty or benign. This is the cross-modal threat model.
+- `POSSIBLY_BENIGN_ATTACK` (1,359 samples): Short T2VSafetyBench prompts that look innocuous in isolation but request unsafe video generation in context.
+
 ### Quality control
 
 - **Deduplication:** The benign text pool contains 0 duplicate texts (verified by exact-string match). New cross-modal benign samples are checked for full-key duplicate tuples (text, image_type, image_content, doc_type, doc_content, audio_method, audio_content). One known existing duplicate cluster (1,340 entries) was identified in `multimodal_image_document.json` from the original v1 build; it is documented in `benign/summary.json` and existing IDs were not modified.
@@ -63,7 +84,7 @@ The edge-case benign set was designed to reduce false positives on security-adja
 | [Tensor Trust](https://arxiv.org/abs/2311.01011) | 126K | text | Adversarial game (attack vs defense) | Attack/defense framing, not injection vs benign binary |
 | [HackAPrompt](https://arxiv.org/abs/2311.16119) | 600K+ | text | Competition entries | Competition-specific objectives, no multimodal delivery |
 | [InjectAgent](https://arxiv.org/abs/2403.02691) | 1,054 | text | Agent tool-call scenarios | Agent/tool focus only, no cross-modal |
-| **This dataset** | **503,596** | **text, image, document, audio, video** | Peer-reviewed papers + industry research + CVE reports + competition datasets | All of the above + 2025-2026 frontier categories + 201K external payloads + 1:1 balanced benign |
+| **This dataset** | **503,358** | **text, image, document, audio, video** | Peer-reviewed papers + industry research + CVE reports + competition datasets | All of the above + 2025-2026 frontier categories + 201K external payloads + audited 1:1 balanced benign |
 
 This dataset is the only publicly available prompt injection dataset that covers cross-modal delivery, agentic attack categories (computer use, MCP, memory poisoning, multi-agent contagion, reasoning hijack), 2025-2026 frontier attacks (reasoning DoS, video generation jailbreaking, VLA robotic injection, LoRA supply chain poisoning, audio-native LLM jailbreaks, serialization boundary RCE, agent skill supply chain), and a balanced benign split at scale.
 
@@ -88,9 +109,9 @@ This dataset is the only publicly available prompt injection dataset that covers
 | **v4** | `generate_v4_payloads.py` | 284 | -- | 284 | Agentic attacks, memory poisoning, MCP, reasoning hijack, RAG, ASR |
 | **v4 cross-modal** | `generate_v4_crossmodal.py` | 11,928 | -- | 11,928 | v4 seeds delivered via text+image, text+doc, text+audio, image+doc, triple |
 | **v5** | `generate_v5_payloads.py` | 184 | -- | 184 | 2025-2026 frontier: reasoning DoS, video jailbreak, VLA robotic, LoRA supply chain, audio-native LLM, cross-modal decomposition, RAG optimisation, MCP cross-server, coding agent, serialization RCE, agent skill supply chain |
-| **v5 external** | `ingest_v5_external.py` | 201,098 | -- | 201,098 | Ingested from OverThink, T2VSafetyBench, Jailbreak-AudioBench, CyberSecEval 3, LLMail-Inject |
-| **v5 benign** | `scale_benign_v5.py` | -- | 201,282 | 201,282 | Text-only benign from Alpaca, WildChat, OASST2, Dolly, UltraChat, MMLU, TriviaQA |
-| **Total** | | **251,798** | **251,798** | **503,596** | |
+| **v5 external** | `ingest_v5_external.py` | 201,096 | -- | 201,096 | Ingested from OverThink, T2VSafetyBench, Jailbreak-AudioBench, CyberSecEval 3, LLMail-Inject (2 removed during audit for containing real API keys) |
+| **v5 benign** | `scale_benign_v5.py` | -- | 201,060 | 201,060 | Text-only benign from Alpaca, WildChat, OASST2, Dolly, UltraChat, MMLU, TriviaQA (222 removed during audit for containing injection patterns) |
+| **Total** | | **251,782** | **251,576** | **503,358** | |
 
 ---
 
