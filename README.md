@@ -6,6 +6,31 @@ Built for training and evaluating prompt injection detectors. All samples are la
 
 ---
 
+## Quickstart - test any LLM in 30 seconds
+
+Install the CLI:
+
+```bash
+curl -sSL https://bordair.io/install.sh | bash
+# or:  pip install bordair
+```
+
+Point it at any OpenAI-compatible endpoint:
+
+```bash
+bordair eval \
+  --url https://api.openai.com/v1/chat/completions \
+  --key $OPENAI_API_KEY \
+  --model gpt-4o-mini \
+  --modality text \
+  --limit 100 \
+  --parallel 10
+```
+
+You get an Attack Success Rate table by category. Works with OpenAI, Anthropic, Groq, Together, Fireworks, Ollama, LM Studio, vLLM, or any OpenAI-compatible endpoint. See [bordair_cli/](bordair_cli/) for the full CLI docs.
+
+---
+
 ## Methodology
 
 ### What this dataset covers
