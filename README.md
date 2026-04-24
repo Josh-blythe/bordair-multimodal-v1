@@ -1148,10 +1148,4 @@ texts = [s.get("text", "") for s in all_samples]
 
 ---
 
-## License
-
-MIT
-
----
-
 *Created by [Bordair](https://bordair.io) -- AI multimodal attack detection*
